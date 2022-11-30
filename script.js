@@ -1,9 +1,17 @@
 // Global variables
-
 const hands = ['High Card', 'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House', 'Four of a Kind', 'Straight Flush']
+const bodyEl = document.querySelector('body');
+/* DOM Elements */
+const playerDiv = document.createElement("div")
+playerDiv.classList.add('character-div')
+bodyEl.appendChild(playerDiv);
+const computerDiv = document.createElement("div")
+computerDiv.classList.add('character-div')
+bodyEl.appendChild(computerDiv);
+const boardDiv = document.createElement("div")
+bodyEl.appendChild(boardDiv);
 
 // Classes
-
 class Deck {
     constructor(){
         this.deck = []
@@ -28,9 +36,11 @@ class Deck {
             count--;
         };
     }
-
     dealStart(){
-        //Deal 2 hole cards to each player
+        const playerCards = this.deck.splice(0, 2);
+        console.log(playerCards);
+        const compCards = this.deck.splice(0, 2);
+        console.log(compCards);
     }
     dealFlop(){
         //Deal 3 community cards
@@ -42,12 +52,10 @@ class Deck {
         //Deal 1 community card
     }
 }
-const deckOne = new Deck;
-console.log(deckOne)
+const deckOne = new Deck
 deckOne.shuffle();
-console.log(deckOne);
-// deckOne.shuffle();
-// console.log(deckOne);
+deckOne.dealStart();
+
 /**
  * Sticking Points:
  * Had to use for(in) loop instead of a for(of) loop to get the suits to attack to the cards. Reason?
@@ -55,18 +63,3 @@ console.log(deckOne);
  * Shuffler addes an undefined object to the deck???
  */
 
-//  function shuffle(Deck) {
-//     let index = Deck.length, randomIndex;    
-//     while (index != 0) {
-//       randomIndex = Math.floor(Math.random() * index);
-//       index--;
-//       [values[index], values[randomIndex]] = [
-//         values[randomIndex], values[index]];
-//     }
-//     return values;
-//   }
-  
-//   // define an array and randomize it
-//   var arr = ['a', 'b', 'c', 'd', 'e'];
-//   randomize(arr);
-//   console.log(arr);
