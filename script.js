@@ -11,6 +11,10 @@ bodyEl.appendChild(computerDiv);
 const boardDiv = document.createElement("div")
 bodyEl.appendChild(boardDiv);
 
+const playerHoleCards = document.createElement("div")
+
+const compHoleCards = document.createElement("div");
+
 // Classes
 class Deck {
     constructor(){
@@ -20,8 +24,8 @@ class Deck {
         for (let suit in suits){
             for (let rank in ranks){
                 const card = {
-                    Rank: `${ranks[rank]}`,
-                    Suit: `${suits[suit]}`
+                    rank: `${ranks[rank]}`,
+                    suit: `${suits[suit]}`
                 }
                 this.deck.push(card);
             }
@@ -38,9 +42,15 @@ class Deck {
     }
     dealStart(){
         const playerCards = this.deck.splice(0, 2);
-        console.log(playerCards);
+        const holeCardOne = playerCards[0];
+        const holeCardTwo = playerCards[1];
+        playerHoleCards.textContent = `${holeCardOne.rank} of ${holeCardOne.suit} | ${holeCardTwo.rank} of ${holeCardTwo.suit}`
+        playerDiv.appendChild(playerHoleCards);
         const compCards = this.deck.splice(0, 2);
-        console.log(compCards);
+        const holeCardThree = compCards[0];
+        const holeCardFour = compCards[1];
+        compHoleCards.textContent = `${holeCardThree.rank} of ${holeCardThree.suit} | ${holeCardFour.rank} of ${holeCardFour.suit}`
+        computerDiv.appendChild(compHoleCards);
     }
     dealFlop(){
         //Deal 3 community cards
@@ -63,3 +73,8 @@ deckOne.dealStart();
  * Shuffler addes an undefined object to the deck???
  */
 
+function renderBoard(){
+    
+    
+}
+renderBoard();
