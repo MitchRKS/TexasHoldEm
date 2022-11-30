@@ -15,6 +15,11 @@ const playerHoleCards = document.createElement("div")
 
 const compHoleCards = document.createElement("div");
 
+const flop = document.createElement("div");
+
+const turn = document.createElement("div");
+
+const river = document.createElement("div");
 // Classes
 class Deck {
     constructor(){
@@ -53,18 +58,33 @@ class Deck {
         computerDiv.appendChild(compHoleCards);
     }
     dealFlop(){
-        //Deal 3 community cards
+        const flopCards = this.deck.splice(0, 3);
+        const flopCardOne = flopCards[0];
+        console.log(flopCardOne)
+        const flopCardTwo = flopCards[1];
+        console.log(flopCardTwo);
+        const flopCardThree = flopCards[2];
+        console.log(flopCardThree);
+        flop.textContent = `${flopCardOne.rank} of ${flopCardOne.suit} | ${flopCardTwo.rank} of ${flopCardTwo.suit} | ${flopCardThree.rank} of ${flopCardThree.suit}`
+        bodyEl.appendChild(flop);
     }
     dealTurn(){
-        //Deal 1 community card
+        const turnCard = this.deck.splice(0, 1)[0];
+        turn.textContent = `${turnCard.rank} of ${turnCard.suit}`
+        bodyEl.appendChild(turn);
     }
     dealRiver(){
-        //Deal 1 community card
+        const riverCard = this.deck.splice(0, 1)[0];
+        river.textContent = `${riverCard.rank} of ${riverCard.suit}`
+        bodyEl.appendChild(river);
     }
 }
 const deckOne = new Deck
 deckOne.shuffle();
 deckOne.dealStart();
+deckOne.dealFlop();
+deckOne.dealTurn();
+deckOne.dealRiver();
 
 /**
  * Sticking Points:
@@ -72,7 +92,10 @@ deckOne.dealStart();
  * Remember to create and push objects not strings
  * Shuffler addes an undefined object to the deck???
  */
-
+/**
+ * AHA moments:
+ * can tack on an index selector to the end of the splice method in the methods within the Class constructor (removes a step from the process)
+ */
 function renderBoard(){
     
     
