@@ -1,8 +1,8 @@
-// // Global variables
+// Global variables
 
-// const hands = ['High Card', 'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House', 'Four of a Kind', 'Straight Flush']
+const hands = ['High Card', 'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House', 'Four of a Kind', 'Straight Flush']
 
-// //Classes
+// Classes
 
 class Deck {
     constructor(){
@@ -11,27 +11,35 @@ class Deck {
         const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         for (let suit in suits){
             for (let rank in ranks){
-                this.deck.push(`${ranks[rank]} of ${suits[suit]}`);
+                const card = {
+                    Rank: `${ranks[rank]}`,
+                    Suit: `${suits[suit]}`
+                }
+                this.deck.push(card);
             }
         }
+    }
+    shuffle(){
+        // Randomize order of objects in array
+    }
+    dealStart(){
+        //Deal 2 hole cards to each player
+    }
+    dealFlop(){
+        //Deal 3 community cards
+    }
+    dealTurn(){
+        //Deal 1 community card
+    }
+    dealRiver(){
+        //Deal 1 community card
     }
 }
 const deckOne = new Deck;
 console.log(deckOne.deck);
 
-// class Deck {
-//     constructor() {
-//       this.deck = [];
-//       const suits = ['Hearts', 'Spades', 'Clubs', 'Diamonds'];
-//       const values = ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King'];
-  
-//       for (let suit in suits) {
-//         for (let value in values) {
-//           this.deck.push(`${values[value]} of ${suits[suit]}`);
-//         }
-//       }
-//     }
-//   }
-  
-//   const deck1 = new Deck();
-//   console.log(deck1.deck);
+/**
+ * Sticking Points:
+ * Had to use for(in) loop instead of a for(of) loop to get the suits to attack to the cards. Reason?
+ * 
+ */
