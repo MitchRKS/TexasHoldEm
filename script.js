@@ -24,8 +24,6 @@ const turn = document.createElement("div");
 
 const river = document.createElement("div");
 
-
-
 // Classes
 class Deck {
     constructor(){
@@ -93,19 +91,54 @@ class Deck {
     }
     
 }
+
+class Character {
+    constructor(name, chipCount){
+        this.pool = []
+        this.name = name;
+        this.chipCount = chipCount;
+        const names = ['wild bill', 'wyatt earp'];
+        const chipCounts = [1000, 1000];
+        for (let name in names){
+            for (let chipCount in chipCounts){
+                const character = {
+                    name: `${names[name]}`,
+                    chipCount: `${chipCounts[chipCount]}`
+                }
+                this.pool.push(character);
+            }
+        }
+    }
+    
+}
 const deckOne = new Deck
+
 // deckOne.shuffle();
 // deckOne.dealStart();
 // deckOne.dealFlop();
 // deckOne.dealTurn();
 // deckOne.dealRiver();
 
+// Buttons
+const dealButton = document.createElement("button");
+dealButton.textContent = 'DEAL';
+bodyEl.appendChild(dealButton);
 
+const foldButton = document.createElement("button")
+foldButton.textContent = 'FOLD';
+bodyEl.appendChild(foldButton);
+
+const callButton = document.createElement("button");
+callButton.textContent = 'CALL';
+bodyEl.appendChild(callButton);
+
+const raiseButton = document.createElement("button");
+raiseButton.textContent = 'RAISE';
+bodyEl.appendChild(raiseButton);
 // Event Listeners
 dealButton.addEventListener("click", ()=> {
     deckOne.shuffle();
     deckOne.dealStart();
-    deckOne.dealFlop();
 })
 // dealButton.addEventListener("click", ()=> {
 //     console.log('deal btn listener 2 connected')
