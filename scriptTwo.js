@@ -59,6 +59,7 @@ class Dealer extends Table{
             this.deck.push(card);
             }
         }
+        this.shuffle();
     }
     shuffle() {
         let count = this.deck.length;
@@ -69,17 +70,31 @@ class Dealer extends Table{
             count--;
         };
     }
-    dealCard(num) {
-        const nextCard = this.deck.splice(0,num);
-        console.log(nextCard);
+    dealCards(num) {
+        const nextCards = this.deck.splice(0,num);
+        console.log(nextCards)
+        for (let card of nextCards){
+            console.log(card);
+            this.board.push(card);
+            console.log(this.board)
+        }
     }
 }
 
-let dealer = new Dealer();
-dealer.shuffle();
-console.log(dealer.deck)
-dealer.dealCard(2);
+const dealer = new Dealer();
+console.log(dealer);
 const table = new Table();
+console.log(table);
+const playerOne = new Player();
+console.log(playerOne)
+const playerTwo = new Player();
+console.log(playerTwo);
+dealer.dealCards(3)
+
+// dealer.shuffle();
+// console.log(dealer.deck)
+// dealer.dealCard(2);
+
 //     dealStart(){
 //         const playerCards = this.deck.splice(0, 2);
 //         const holeCardOne = playerCards[0];
