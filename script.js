@@ -89,7 +89,9 @@ class Deck {
         river.classList.add("card");
         bodyEl.appendChild(river);
     }
-    
+    evaluateBoard(){
+        
+    }
 }
 
 class Character {
@@ -111,13 +113,15 @@ class Character {
     }
     
 }
-const deckOne = new Deck
 
-// deckOne.shuffle();
-// deckOne.dealStart();
-// deckOne.dealFlop();
-// deckOne.dealTurn();
-// deckOne.dealRiver();
+//class Dealer {}
+const deckOne = new Deck();
+
+deckOne.shuffle();
+deckOne.dealStart();
+deckOne.dealFlop();
+deckOne.dealTurn();
+deckOne.dealRiver();
 
 // Buttons
 const dealButton = document.createElement("button");
@@ -140,6 +144,9 @@ dealButton.addEventListener("click", ()=> {
     deckOne.shuffle();
     deckOne.dealStart();
 })
+debugger
+deckOne.evaluateBoard();
+
 // dealButton.addEventListener("click", ()=> {
 //     console.log('deal btn listener 2 connected')
 // })
