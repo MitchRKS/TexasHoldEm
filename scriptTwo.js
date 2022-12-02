@@ -6,7 +6,7 @@ const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
 // Classes
 class Player {
     constructor(table){
-        this.hand = [];
+        this.board = [];
         this.table = table;
         this.name = name; 
     }
@@ -15,14 +15,14 @@ class Player {
         for (let card of this.table.board){
             console.log(card)
         }
-        for (let card of this.hand){
+        for (let card of this.board){
             strength += card.rank;
         }
         console.log(strength);
         return strength;
     }
     get handFull() {
-        return this.hand.length >= 2;
+        return this.board.length >= 2;
     }
 }
 
@@ -30,7 +30,7 @@ class Table extends Player {
     constructor(){
         super();
         this.players = [new Player(this), new Player(this)];
-        this.board = ['push community cards to this array'];
+        this.board = [];
     }
 
     readBoard() {
@@ -70,26 +70,29 @@ class Dealer extends Table{
             count--;
         };
     }
-    dealCards(num) {
+    dealCards(num, target) {
         const nextCards = this.deck.splice(0,num);
-        console.log(nextCards)
         for (let card of nextCards){
             console.log(card);
-            this.board.push(card);
+            target.board.push(card); 
             console.log(this.board)
         }
     }
 }
 
 const dealer = new Dealer();
-console.log(dealer);
+//console.log(dealer);
 const table = new Table();
 console.log(table);
 const playerOne = new Player();
 console.log(playerOne)
 const playerTwo = new Player();
 console.log(playerTwo);
-dealer.dealCards(3)
+dealer.dealCards(3, playerOne)
+console.log(dealer)
+console.log(table)
+console.log(playerOne)
+console.log(playerTwo);
 
 // dealer.shuffle();
 // console.log(dealer.deck)
