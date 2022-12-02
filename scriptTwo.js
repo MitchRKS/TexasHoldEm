@@ -26,8 +26,9 @@ class Player {
     }
 }
 
-class Table {
+class Table extends Player {
     constructor(){
+        super();
         this.players = [new Player(this), new Player(this)];
         this.board = ['push community cards to this array'];
     }
@@ -55,7 +56,7 @@ class Dealer extends Table{
                     rank: `${ranks[rank]}`,
                     suit: `${suits[suit]}`
                 }
-                this.deck.push(card);
+            this.deck.push(card);
             }
         }
     }
@@ -69,14 +70,15 @@ class Dealer extends Table{
         };
     }
     dealCard() {
-        let nextCard = this.deck.splice(0, 1);
-
+        const nextCard = this.deck.splice(0,1);
+        console.log(nextCard);
     }
 }
 
 let dealer = new Dealer();
 dealer.shuffle();
 console.log(dealer.deck)
+dealer.dealCard();
 const table = new Table();
 //     dealStart(){
 //         const playerCards = this.deck.splice(0, 2);
