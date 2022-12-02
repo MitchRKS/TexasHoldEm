@@ -49,8 +49,6 @@ class Dealer extends Table{
     constructor(){
         super();
         this.deck = []
-        const suits = ['spades', 'hearts', 'diamonds', 'clubs']
-        const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
         for (let suit in suits){
             for (let rank in ranks){
                 const card = {
@@ -72,7 +70,7 @@ class Dealer extends Table{
     }
     dealCard() {
         let nextCard = this.deck.splice(0, 1);
-        
+
     }
 }
 
