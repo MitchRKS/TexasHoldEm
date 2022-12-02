@@ -6,17 +6,51 @@ const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
 // Classes
 class Player {
     constructor(table){
-        this.hand = hand;
-        this.stack = stack;
+        this.hand = [];
         this.table = table;
+        this.name = name; 
+    }
+    get handStrength(){
+        let strength = 0;
+        for (let card of this.table.board){
+            console.log(card)
+        }
+        for (let card of this.hand){
+            strength += card.rank;
+        }
+        console.log(strength);
+        return strength;
+    }
+    get handFull() {
+        return this.hand.length >= 2;
     }
 }
 
 class Table {
-    constructor(seats, pot, deck){
-        this.seats = [];
-        this.pot = 0
+    constructor(){
+        this.players = [new Player(this), new Player(this)];
+        this.board = ['push community cards to this array'];
+    }
+
+    readBoard() {
+        let winningHand = 0;
+        let winningPlayer = "";
+        for (let player of this.players){
+            if (player.handStrength >= winningHand){
+                winningHand = player.handStrength;
+                winningPlayer = player.name;
+                alert('new high hand')
+            }
+        }
+    }
+}    
+
+class Dealer extends Table{
+    constructor(){
+        super();
         this.deck = []
+        const suits = ['spades', 'hearts', 'diamonds', 'clubs']
+        const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
         for (let suit in suits){
             for (let rank in ranks){
                 const card = {
@@ -27,25 +61,24 @@ class Table {
             }
         }
     }
+    shuffle() {
+        let count = this.deck.length;
+        while(count != 0){
+            let randomIndex = Math.floor(Math.random() * count);
+            count--;
+            [this.deck[count], this.deck[randomIndex]] = [this.deck[randomIndex], this.deck[count]];
+            count--;
+        };
+    }
+    dealCard() {
+        let nextCard = this.deck.splice(0, 1);
+        
+    }
 }
 
-class Dealer extends Table{
-        constructor(){
-            super(pot, deck);
-            this.deck = Table.deck;
-        }
-        shuffle() {
-            let count = this.deck.length;
-            while(count != 0){
-                let randomIndex = Math.floor(Math.random() * count);
-                count--;
-                [this.deck[count], this.deck[randomIndex]] = [this.deck[randomIndex], this.deck[count]];
-                count--;
-            };
-        }
-    
-}
-
+let dealer = new Dealer();
+dealer.shuffle();
+console.log(dealer.deck)
 const table = new Table();
 //     dealStart(){
 //         const playerCards = this.deck.splice(0, 2);
