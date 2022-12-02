@@ -69,8 +69,8 @@ class Dealer extends Table{
             count--;
         };
     }
-    dealCard() {
-        const nextCard = this.deck.splice(0,1);
+    dealCard(num) {
+        const nextCard = this.deck.splice(0,num);
         console.log(nextCard);
     }
 }
@@ -78,7 +78,7 @@ class Dealer extends Table{
 let dealer = new Dealer();
 dealer.shuffle();
 console.log(dealer.deck)
-dealer.dealCard();
+dealer.dealCard(2);
 const table = new Table();
 //     dealStart(){
 //         const playerCards = this.deck.splice(0, 2);
