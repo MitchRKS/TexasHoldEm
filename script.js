@@ -34,15 +34,8 @@ class Player {
         this.chipCount -= 10;
         this.table.chipCount += 10;
     }
-    callSmallBet(){
-        this.chipCount -= 5;
-        this.table.chipCount += 5;
-        dealer.dealCards(3, table);
-    }
-    callLargeBet(){
-        this.chipCount -= 10;
-        this.table.chipCount += 10;
-
+    fold(){
+        alert('Opponent Folds, You Win!');
     }
 }
 
@@ -116,6 +109,11 @@ betSmallBtn.textContent = 'Bet 5';
 betSmallBtn.classList.add("btn");
 bodyEl.appendChild(betSmallBtn);
 
+const betLargeBtn = document.createElement("button");
+betLargeBtn.textContent = 'Bet 10';
+betLargeBtn.classList.add('btn');
+bodyEl.appendChild(betLargeBtn);
+
 const dealer = new Dealer();
 const table = new Table();
 const playerOne = new Player(table, 100);
@@ -142,9 +140,32 @@ dealBtn.addEventListener("click", () => {
 })
 
 betSmallBtn.addEventListener("click", () => {
-playerOne.betSmall()
+playerOne.betSmall();
+if (Math.random()>.5){
+    playerTwo.betSmall()
+    dealer.dealCards(3, table);
+} else {
+    playerTwo.fold();
+    table.awardPot(playerOne);
+    playerOne.board = []
+    playerTwo.board = []
+}
 console.log(playerOne)
 }); //Want this to be work for any player
+
+betLargeBtn.addEventListener("click", () => {
+    playerOne.betLarge();
+    if (Math.random()>.25){
+        playerTwo.betLarge()
+        dealer.dealCards(1, table);
+    } else {
+        playerTwo.fold();
+        table.awardPot(playerOne);
+    }
+    console.log(playerOne)
+    }); 
+
+//Want to replace bet small button w/ bet large button after the flop
 
 /**
  * Remaining items:
