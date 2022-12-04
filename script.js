@@ -27,7 +27,7 @@ class Player {
     }
     betSmall(){
         this.chipCount -= 5;
-        this.table.pot +=5;
+        this.table.chipCount +=5;
     }
     betLarge(){
         this.chipCount -= 10;
@@ -53,6 +53,11 @@ class Table extends Player {
                 //alert('new high hand')
             }
         }
+    }
+    awardPot(player) {
+        player.chipCount += this.chipCount
+        this.chipCount = 0;
+        return;
     }
 }    
 
@@ -104,6 +109,9 @@ console.log(playerOne)
 console.log(playerTwo);
 
 playerOne.betLarge();
+console.log(playerOne);
+console.log(table);
+table.awardPot(playerOne);
 console.log(playerOne);
 console.log(table);
 /**
