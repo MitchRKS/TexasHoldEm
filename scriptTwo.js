@@ -1,7 +1,7 @@
 // Global variables
 const hands = ['High Card', 'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House', 'Four of a Kind', 'Straight Flush']
 const suits = ['spades', 'hearts', 'diamonds', 'clubs']
-const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
+const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 // Classes
 class Player {
@@ -13,12 +13,12 @@ class Player {
     get handStrength(){
         let strength = 0;
         for (let card of this.table.board){
-            console.log(card)
+            const rankNum = parseInt(card.rank)
+            strength += rankNum; 
         }
         for (let card of this.board){
             strength += card.rank;
         }
-        console.log(strength);
         return strength;
     }
     get handFull() {
@@ -40,7 +40,7 @@ class Table extends Player {
             if (player.handStrength >= winningHand){
                 winningHand = player.handStrength;
                 winningPlayer = player.name;
-                alert('new high hand')
+                //alert('new high hand')
             }
         }
     }
@@ -81,14 +81,15 @@ class Dealer extends Table{
 }
 
 const dealer = new Dealer();
-//console.log(dealer);
 const table = new Table();
-console.log(table);
 const playerOne = new Player();
-console.log(playerOne)
 const playerTwo = new Player();
-console.log(playerTwo);
-dealer.dealCards(3, playerOne)
+
+dealer.dealCards(2, playerOne)
+dealer.dealCards(2, playerTwo)
+dealer.dealCards(3, table)
+table.readBoard();
+
 console.log(dealer)
 console.log(table)
 console.log(playerOne)
