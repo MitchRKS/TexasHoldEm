@@ -25,7 +25,14 @@ class Player {
     get handFull() {
         return this.board.length >= 2;
     }
-    
+    betSmall(){
+        this.chipCount -= 5;
+        this.table.pot +=5;
+    }
+    betLarge(){
+        this.chipCount -= 10;
+        this.table.chipCount += 10;
+    }
 }
 
 class Table extends Player {
@@ -33,6 +40,7 @@ class Table extends Player {
         super();
         this.players = [new Player(this), new Player(this)];
         this.board = [];
+        this.chipCount = 0;
     }
 
     readBoard() {
@@ -75,9 +83,7 @@ class Dealer extends Table{
     dealCards(num, target) {
         const nextCards = this.deck.splice(0,num);
         for (let card of nextCards){
-            console.log(card);
             target.board.push(card); 
-            console.log(this.board)
         }
     }
 }
@@ -97,6 +103,9 @@ console.log(table)
 console.log(playerOne)
 console.log(playerTwo);
 
+playerOne.betLarge();
+console.log(playerOne);
+console.log(table);
 /**
  * Remaining items:
  * Instruction modal
