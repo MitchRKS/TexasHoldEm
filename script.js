@@ -5,10 +5,11 @@ const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 // Classes
 class Player {
-    constructor(table){
+    constructor(table, chipCount){
         this.board = [];
         this.table = table;
         this.name = name; 
+        this.chipCount = chipCount;
     }
     get handStrength(){
         let strength = 0;
@@ -24,6 +25,7 @@ class Player {
     get handFull() {
         return this.board.length >= 2;
     }
+    
 }
 
 class Table extends Player {
@@ -82,8 +84,8 @@ class Dealer extends Table{
 
 const dealer = new Dealer();
 const table = new Table();
-const playerOne = new Player();
-const playerTwo = new Player();
+const playerOne = new Player(table, 100);
+const playerTwo = new Player(table, 100);
 
 dealer.dealCards(2, playerOne)
 dealer.dealCards(2, playerTwo)
@@ -94,3 +96,12 @@ console.log(dealer)
 console.log(table)
 console.log(playerOne)
 console.log(playerTwo);
+
+/**
+ * Remaining items:
+ * Instruction modal
+ * Bet functionality
+ * Win conditions
+ * Buttons
+ * Display elements
+ */
