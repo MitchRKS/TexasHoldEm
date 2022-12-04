@@ -36,6 +36,7 @@ class Player {
     }
     fold(){
         alert('Opponent Folds, You Win!');
+        clearBoards();
     }
 }
 
@@ -61,6 +62,7 @@ class Table extends Player {
     awardPot(player) {
         player.chipCount += this.chipCount
         this.chipCount = 0;
+        clearBoards();
         return;
     }
 }    
@@ -119,51 +121,54 @@ const table = new Table();
 const playerOne = new Player(table, 100);
 const playerTwo = new Player(table, 100);
 
-console.log(dealer)
-console.log(table)
-console.log(playerOne)
-console.log(playerTwo);
-
-playerOne.betLarge();
-console.log(playerOne);
-console.log(table);
-table.awardPot(playerOne);
-console.log(playerOne);
-console.log(table);
-
 // Event Listeners
 dealBtn.addEventListener("click", () => {
+    determineStake();
     dealer.dealCards(2, playerOne)
     dealer.dealCards(2, playerTwo)
     console.log(playerOne);
     console.log(playerTwo);
+    console.log(table)
 })
 
 betSmallBtn.addEventListener("click", () => {
 playerOne.betSmall();
-if (Math.random()>.5){
+if (Math.random()>.01){
     playerTwo.betSmall()
     dealer.dealCards(3, table);
     determineStake();
 } else {
     playerTwo.fold();
     table.awardPot(playerOne);
-    playerOne.board = []
-    playerTwo.board = []
+    clearBoards();
+    dealer.shuffle();
 }
-console.log(playerOne)
+console.log(playerOne);
+console.log(playerTwo);
+console.log(table)
 }); //Want this to be work for any player
 
 betLargeBtn.addEventListener("click", () => {
     playerOne.betLarge();
     if (Math.random()>.25){
         playerTwo.betLarge()
+        if (table.board.length >= 5){
+            //evaluate winner
+            table.awardPot(playerOne);
+            clearBoards();
+            dealer.shuffle();
+        } else {
         dealer.dealCards(1, table);
+        }
     } else {
         playerTwo.fold();
         table.awardPot(playerOne);
+        clearBoards();
+        dealer.shuffle();
     }
-    console.log(playerOne)
+    console.log(playerOne);
+    console.log(playerTwo);
+    console.log(table)
     }); 
 
 //Want to replace bet small button w/ bet large button after the flop
@@ -179,6 +184,12 @@ function determineStake(){
     }
 }
 determineStake();
+function clearBoards(){
+    playerOne.board = []
+    playerTwo.board = []
+    table.board = []
+    determineStake();
+}
 /**
  * Remaining items:
  * Instruction modal
