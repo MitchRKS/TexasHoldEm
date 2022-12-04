@@ -107,12 +107,12 @@ bodyEl.appendChild(dealBtn);
 const betSmallBtn = document.createElement("button");
 betSmallBtn.textContent = 'Bet 5';
 betSmallBtn.classList.add("btn");
-bodyEl.appendChild(betSmallBtn);
+
 
 const betLargeBtn = document.createElement("button");
 betLargeBtn.textContent = 'Bet 10';
 betLargeBtn.classList.add('btn');
-bodyEl.appendChild(betLargeBtn);
+
 
 const dealer = new Dealer();
 const table = new Table();
@@ -144,6 +144,7 @@ playerOne.betSmall();
 if (Math.random()>.5){
     playerTwo.betSmall()
     dealer.dealCards(3, table);
+    determineStake();
 } else {
     playerTwo.fold();
     table.awardPot(playerOne);
@@ -167,6 +168,17 @@ betLargeBtn.addEventListener("click", () => {
 
 //Want to replace bet small button w/ bet large button after the flop
 
+function determineStake(){
+    if (table.board.length === 0){
+        bodyEl.appendChild(betSmallBtn)
+        return;
+    } else {
+        bodyEl.removeChild(betSmallBtn);
+        bodyEl.appendChild(betLargeBtn)
+        return;
+    }
+}
+determineStake();
 /**
  * Remaining items:
  * Instruction modal
