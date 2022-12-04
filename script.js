@@ -2,6 +2,7 @@
 const hands = ['High Card', 'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House', 'Four of a Kind', 'Straight Flush']
 const suits = ['spades', 'hearts', 'diamonds', 'clubs']
 const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+const bodyEl = document.querySelector("body");
 
 // Classes
 class Player {
@@ -32,6 +33,16 @@ class Player {
     betLarge(){
         this.chipCount -= 10;
         this.table.chipCount += 10;
+    }
+    callSmallBet(){
+        this.chipCount -= 5;
+        this.table.chipCount += 5;
+        dealer.dealCards(3, table);
+    }
+    callLargeBet(){
+        this.chipCount -= 10;
+        this.table.chipCount += 10;
+
     }
 }
 
@@ -93,15 +104,22 @@ class Dealer extends Table{
     }
 }
 
+//Buttons
+
+const dealBtn = document.createElement("button");
+dealBtn.textContent = 'Deal';
+dealBtn.classList.add("btn")
+bodyEl.appendChild(dealBtn);
+
+const betSmallBtn = document.createElement("button");
+betSmallBtn.textContent = 'Bet 5';
+betSmallBtn.classList.add("btn");
+bodyEl.appendChild(betSmallBtn);
+
 const dealer = new Dealer();
 const table = new Table();
 const playerOne = new Player(table, 100);
 const playerTwo = new Player(table, 100);
-
-dealer.dealCards(2, playerOne)
-dealer.dealCards(2, playerTwo)
-dealer.dealCards(3, table)
-table.readBoard();
 
 console.log(dealer)
 console.log(table)
@@ -114,6 +132,20 @@ console.log(table);
 table.awardPot(playerOne);
 console.log(playerOne);
 console.log(table);
+
+// Event Listeners
+dealBtn.addEventListener("click", () => {
+    dealer.dealCards(2, playerOne)
+    dealer.dealCards(2, playerTwo)
+    console.log(playerOne);
+    console.log(playerTwo);
+})
+
+betSmallBtn.addEventListener("click", () => {
+playerOne.betSmall()
+console.log(playerOne)
+}); //Want this to be work for any player
+
 /**
  * Remaining items:
  * Instruction modal
