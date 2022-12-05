@@ -6,7 +6,7 @@ const bodyEl = document.querySelector("body");
 
 // Classes
 class Player {
-    constructor(table, chipCount){
+    constructor(name, table, chipCount){
         this.board = [];
         this.table = table;
         this.name = name; 
@@ -37,6 +37,7 @@ class Player {
     fold(){
         alert('Opponent Folds, You Win!');
         clearBoards();
+        dealer.shuffle();
     }
 }
 
@@ -94,7 +95,11 @@ class Dealer extends Table{
     dealCards(num, target) {
         const nextCards = this.deck.splice(0,num);
         for (let card of nextCards){
-            target.board.push(card); 
+            target.board.push(card);
+            let cardDiv = document.createElement("div");
+            cardDiv.classList.add("card")
+            cardDiv.textContent = `${Player.name}: ${card.rank} of ${card.suit}`;
+            bodyEl.appendChild(cardDiv);
         }
     }
 }
@@ -118,8 +123,8 @@ betLargeBtn.classList.add('btn');
 
 const dealer = new Dealer();
 const table = new Table();
-const playerOne = new Player(table, 100);
-const playerTwo = new Player(table, 100);
+const playerOne = new Player('playerOne', table, 100);
+const playerTwo = new Player('playerTwo', table, 100);
 
 // Event Listeners
 dealBtn.addEventListener("click", () => {
@@ -156,7 +161,6 @@ betLargeBtn.addEventListener("click", () => {
             //evaluate winner
             table.awardPot(playerOne);
             clearBoards();
-            dealer.shuffle();
         } else {
         dealer.dealCards(1, table);
         }
@@ -164,7 +168,6 @@ betLargeBtn.addEventListener("click", () => {
         playerTwo.fold();
         table.awardPot(playerOne);
         clearBoards();
-        dealer.shuffle();
     }
     console.log(playerOne);
     console.log(playerTwo);
@@ -183,12 +186,12 @@ function determineStake(){
         return;
     }
 }
+
 determineStake();
 function clearBoards(){
     playerOne.board = []
     playerTwo.board = []
     table.board = []
-    determineStake();
 }
 /**
  * Remaining items:
