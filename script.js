@@ -51,11 +51,11 @@ class Table extends Player {
 
     readBoard() {
         let winningHand = 0;
-        let winningPlayer = "";
+        //let winningPlayer = "";
         for (let player of this.players){
             if (player.handStrength >= winningHand){
                 winningHand = player.handStrength;
-                winningPlayer = player.name;
+                //winningPlayer = player.name;
                 //alert('new high hand')
             }
         }
@@ -64,7 +64,6 @@ class Table extends Player {
         player.chipCount += this.chipCount
         this.chipCount = 0;
         clearBoards();
-        return;
     }
 }    
 
@@ -98,7 +97,7 @@ class Dealer extends Table{
             target.board.push(card);
             let cardDiv = document.createElement("div");
             cardDiv.classList.add("card")
-            cardDiv.textContent = `${Player.name}: ${card.rank} of ${card.suit}`;
+            cardDiv.textContent = `${card.rank} of ${card.suit}`;
             bodyEl.appendChild(cardDiv);
         }
     }
@@ -109,7 +108,6 @@ class Dealer extends Table{
 const dealBtn = document.createElement("button");
 dealBtn.textContent = 'Deal';
 dealBtn.classList.add("btn")
-bodyEl.appendChild(dealBtn);
 
 const betSmallBtn = document.createElement("button");
 betSmallBtn.textContent = 'Bet 5';
@@ -123,17 +121,17 @@ betLargeBtn.classList.add('btn');
 
 const dealer = new Dealer();
 const table = new Table();
-const playerOne = new Player('playerOne', table, 100);
-const playerTwo = new Player('playerTwo', table, 100);
+const playerOne = new Player('playerOne', table, 1000);
+const playerTwo = new Player('playerTwo', table, 1000);
 
 // Event Listeners
 dealBtn.addEventListener("click", () => {
-    determineStake();
-    dealer.dealCards(2, playerOne)
-    dealer.dealCards(2, playerTwo)
-    console.log(playerOne);
-    console.log(playerTwo);
-    console.log(table)
+    if (playerOne.board.length === 2){
+        console.log('player hands full');
+    } else {
+        dealer.dealCards(2, playerOne)
+        dealer.dealCards(2, playerTwo)
+    }
 })
 
 betSmallBtn.addEventListener("click", () => {
@@ -141,58 +139,47 @@ playerOne.betSmall();
 if (Math.random()>.01){
     playerTwo.betSmall()
     dealer.dealCards(3, table);
-    determineStake();
+    renderTable();
 } else {
     playerTwo.fold();
-    table.awardPot(playerOne);
-    clearBoards();
-    dealer.shuffle();
+    renderTable();
 }
-console.log(playerOne);
-console.log(playerTwo);
-console.log(table)
-}); //Want this to be work for any player
+});
 
 betLargeBtn.addEventListener("click", () => {
     playerOne.betLarge();
     if (Math.random()>.25){
         playerTwo.betLarge()
-        if (table.board.length >= 5){
-            //evaluate winner
-            table.awardPot(playerOne);
-            clearBoards();
-        } else {
         dealer.dealCards(1, table);
-        }
+        renderTable();
     } else {
         playerTwo.fold();
-        table.awardPot(playerOne);
-        clearBoards();
+        renderTable();
     }
-    console.log(playerOne);
-    console.log(playerTwo);
-    console.log(table)
     }); 
 
-//Want to replace bet small button w/ bet large button after the flop
+// Want to replace bet small button w/ bet large button after the flop
 
-function determineStake(){
-    if (table.board.length === 0){
-        bodyEl.appendChild(betSmallBtn)
-        return;
-    } else {
-        bodyEl.removeChild(betSmallBtn);
-        bodyEl.appendChild(betLargeBtn)
-        return;
-    }
-}
-
-determineStake();
 function clearBoards(){
     playerOne.board = []
     playerTwo.board = []
     table.board = []
 }
+
+function renderTable(){
+    bodyEl.appendChild(dealBtn)
+    if (table.board.length === 0){
+        bodyEl.appendChild(betSmallBtn);
+    } else if (table.board.length === 3){
+        bodyEl.removeChild(betSmallBtn);
+        bodyEl.appendChild(betLargeBtn);
+    } else if (table.board.length > 3 && table.board.length <= 5){
+        console.log('turn & river')
+    } else {
+        console.log('table has an improper number of cards');
+    }
+}
+renderTable();
 /**
  * Remaining items:
  * Instruction modal
