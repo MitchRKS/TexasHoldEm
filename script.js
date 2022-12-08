@@ -28,6 +28,7 @@ class Table {
     }
     
     awardPot(player) {
+        table.pot = playerOne.pot + playerTwo.pot
         console.log(this.pot);
         player.chipCount += this.pot
         console.log(player.chipCount);
@@ -174,7 +175,7 @@ betLargeBtn.addEventListener("click", () => {
         dealer.dealCards(1, table);
         renderTable();
     } else {
-        table.pot = playerOne.pot + playerTwo.pot
+        
         console.log('before', table.pot, playerOne.pot, playerTwo.pot);
         table.awardPot(playerOne)
         playerTwo.fold();
@@ -184,19 +185,8 @@ betLargeBtn.addEventListener("click", () => {
 
 function renderTable(){
     bodyEl.appendChild(dealBtn)
-    if (table.board.length === 0){
-        bodyEl.appendChild(betSmallBtn);
-    } else if (table.board.length === 3){
-        bodyEl.removeChild(betSmallBtn);
-        bodyEl.appendChild(betLargeBtn);
-    } else if (table.board.length === 4){
-        console.log('turn dealt')
-    } else if (table.board.length === 5){
-        table.awardPot(playerOne);
-        bodyEl.removeChild(betLargeBtn)
-    } else {
-        console.log('invalid number of community cards');
-    }
+    bodyEl.appendChild(betSmallBtn)
+    bodyEl.appendChild(betLargeBtn)
 }
 renderTable();
 /**
