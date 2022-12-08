@@ -3,50 +3,16 @@ const hands = ['High Card', 'Pair', 'Two Pair', 'Three of a Kind', 'Straight', '
 const suits = ['spades', 'hearts', 'diamonds', 'clubs']
 const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 const bodyEl = document.querySelector("body");
+const playerDiv = document.createElement("div")
+playerDiv.classList.add("character")
+bodyEl.appendChild(playerDiv);
 
 // Classes
-class Player {
-    constructor(name, table, chipCount){
+class Table {
+    constructor(players){
+        this.players = players;
         this.board = [];
-        this.table = table;
-        this.name = name; 
-        this.chipCount = chipCount;
-    }
-    get handStrength(){
-        let strength = 0;
-        for (let card of this.table.board){
-            const rankNum = parseInt(card.rank)
-            strength += rankNum; 
-        }
-        for (let card of this.board){
-            strength += card.rank;
-        }
-        return strength;
-    }
-    get handFull() {
-        return this.board.length >= 2;
-    }
-    betSmall(){
-        this.chipCount -= 5;
-        this.table.chipCount +=5;
-    }
-    betLarge(){
-        this.chipCount -= 10;
-        this.table.chipCount += 10;
-    }
-    fold(){
-        alert('Opponent Folds, You Win!');
-        clearBoards();
-        dealer.shuffle();
-    }
-}
-
-class Table extends Player {
-    constructor(){
-        super();
-        this.players = [new Player(this), new Player(this)];
-        this.board = [];
-        this.chipCount = 0;
+        this.pot = 0;
     }
 
     readBoard() {
@@ -60,16 +26,57 @@ class Table extends Player {
             }
         }
     }
+    
     awardPot(player) {
-        player.chipCount += this.chipCount
-        this.chipCount = 0;
-        clearBoards();
+        console.log(this.pot);
+        player.chipCount += this.pot
+        console.log(player.chipCount);
+        this.pot = 0;
+        this.clearBoards();
+        console.log(this.board)
     }
-}    
+   
+    clearBoards() {
+        this.board = [];
+        this.pot = 0;
+        for (let player of this.players){
+            console.log('player board before', player.board.length);
+            player.board = [];
+            console.log('after hand is cleared', player.board.length);
+        }
+        let allCards = document.querySelectorAll('.card')
+        for (let card of allCards){
+            bodyEl.removeChild(card)
+        }
+    }
+}   
+
+class Player extends Table{
+    constructor(name, chipCount, players, pot){
+        super(players, pot);
+        this.name = name; 
+        this.board = [];
+        this.chipCount = chipCount;
+    }
+   
+    betSmall(){
+        this.chipCount -= 5;
+        this.pot +=5;
+    }
+
+    betLarge(){
+        this.chipCount -= 10;
+        this.pot += 10;
+    }
+
+    fold(){
+        console.log('Opponent Folds, You Win!');
+    }
+}
 
 class Dealer extends Table{
-    constructor(){
-        super();
+    constructor(players){
+        super(players);
         this.deck = []
         for (let suit in suits){
             for (let rank in ranks){
@@ -91,6 +98,7 @@ class Dealer extends Table{
             count--;
         };
     }
+    
     dealCards(num, target) {
         const nextCards = this.deck.splice(0,num);
         for (let card of nextCards){
@@ -102,6 +110,16 @@ class Dealer extends Table{
         }
     }
 }
+     // get handStrength(){
+    //     let strength = 0;
+    //     for (let card of this.table.board){
+    //         const rankNum = parseInt(card.rank)
+    //         strength += rankNum; 
+    //     }
+    //     for (let card of this.board){
+    //         strength += card.rank;
+    //     }
+    //     return strength;}
 
 //Buttons
 
@@ -120,10 +138,13 @@ betLargeBtn.classList.add('btn');
 
 
 const dealer = new Dealer();
-const table = new Table();
-const playerOne = new Player('playerOne', table, 1000);
-const playerTwo = new Player('playerTwo', table, 1000);
 
+
+const playerOne = new Player('playerOne', 1000);
+const playerTwo = new Player('playerTwo', 1000);
+const table = new Table([playerOne, playerTwo]);
+console.log(playerOne.name);
+console.log(table)
 // Event Listeners
 dealBtn.addEventListener("click", () => {
     if (playerOne.board.length === 2){
@@ -148,23 +169,18 @@ if (Math.random()>.01){
 
 betLargeBtn.addEventListener("click", () => {
     playerOne.betLarge();
-    if (Math.random()>.25){
+    if (Math.random()>.1){
         playerTwo.betLarge()
         dealer.dealCards(1, table);
         renderTable();
     } else {
+        table.pot = playerOne.pot + playerTwo.pot
+        console.log('before', table.pot, playerOne.pot, playerTwo.pot);
+        table.awardPot(playerOne)
         playerTwo.fold();
         renderTable();
     }
-    }); 
-
-// Want to replace bet small button w/ bet large button after the flop
-
-function clearBoards(){
-    playerOne.board = []
-    playerTwo.board = []
-    table.board = []
-}
+}); 
 
 function renderTable(){
     bodyEl.appendChild(dealBtn)
@@ -173,10 +189,13 @@ function renderTable(){
     } else if (table.board.length === 3){
         bodyEl.removeChild(betSmallBtn);
         bodyEl.appendChild(betLargeBtn);
-    } else if (table.board.length > 3 && table.board.length <= 5){
-        console.log('turn & river')
+    } else if (table.board.length === 4){
+        console.log('turn dealt')
+    } else if (table.board.length === 5){
+        table.awardPot(playerOne);
+        bodyEl.removeChild(betLargeBtn)
     } else {
-        console.log('table has an improper number of cards');
+        console.log('invalid number of community cards');
     }
 }
 renderTable();
