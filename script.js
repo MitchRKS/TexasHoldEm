@@ -29,21 +29,16 @@ class Table {
     
     awardPot(player) {
         table.pot = playerOne.pot + playerTwo.pot
-        console.log(this.pot);
         player.chipCount += this.pot
-        console.log(player.chipCount);
         this.pot = 0;
         this.clearBoards();
-        console.log(this.board)
     }
    
     clearBoards() {
         this.board = [];
         this.pot = 0;
         for (let player of this.players){
-            console.log('player board before', player.board.length);
             player.board = [];
-            console.log('after hand is cleared', player.board.length);
         }
         let allCards = document.querySelectorAll('.card')
         for (let card of allCards){
@@ -157,43 +152,44 @@ dealBtn.addEventListener("click", () => {
 })
 
 betSmallBtn.addEventListener("click", () => {
-playerOne.betSmall();
-if (Math.random()>.01){
-    playerTwo.betSmall()
-    dealer.dealCards(3, table);
-    renderTable();
-} else {
-    playerTwo.fold();
-    renderTable();
-}
+    if (table.board.length === 0){
+        playerOne.betSmall();
+        if (Math.random()>.01){
+            playerTwo.betSmall();
+            dealer.dealCards(3, table);
+        } else {
+            playerTwo.fold();
+        } 
+    } else {
+        console.log('bet more, donkey!');
+    }
 });
 
-betLargeBtn.addEventListener("click", () => {
-    playerOne.betLarge();
-    if (Math.random()>.1){
-        playerTwo.betLarge()
-        dealer.dealCards(1, table);
-        renderTable();
+    betLargeBtn.addEventListener("click", () => {
+    if (table.board.length >= 3 && table.board.length < 5){
+        playerOne.betLarge();
+        if (Math.random()>.1){
+            playerTwo.betLarge()
+            dealer.dealCards(1, table);
+        } else {
+            console.log('before', table.pot, playerOne.pot, playerTwo.pot);
+            table.awardPot(playerOne)
+            playerTwo.fold();
+        }
     } else {
-        
-        console.log('before', table.pot, playerOne.pot, playerTwo.pot);
-        table.awardPot(playerOne)
-        playerTwo.fold();
-        renderTable();
+        console.log('cant bet that much yet')
     }
 }); 
 
-function renderTable(){
-    bodyEl.appendChild(dealBtn)
-    bodyEl.appendChild(betSmallBtn)
-    bodyEl.appendChild(betLargeBtn)
-}
-renderTable();
+bodyEl.appendChild(dealBtn)
+bodyEl.appendChild(betSmallBtn)
+bodyEl.appendChild(betLargeBtn)
 /**
  * Remaining items:
  * Instruction modal
- * Bet functionality
  * Win conditions
- * Buttons
  * Display elements
+ * 
+ * Known bugs:
+ * Bet
  */
