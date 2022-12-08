@@ -165,14 +165,13 @@ betSmallBtn.addEventListener("click", () => {
     }
 });
 
-    betLargeBtn.addEventListener("click", () => {
+betLargeBtn.addEventListener("click", () => {
     if (table.board.length >= 3 && table.board.length < 5){
         playerOne.betLarge();
         if (Math.random()>.1){
             playerTwo.betLarge()
             dealer.dealCards(1, table);
         } else {
-            console.log('before', table.pot, playerOne.pot, playerTwo.pot);
             table.awardPot(playerOne)
             playerTwo.fold();
         }
