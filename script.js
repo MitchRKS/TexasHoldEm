@@ -127,20 +127,15 @@ const betSmallBtn = document.createElement("button");
 betSmallBtn.textContent = 'Bet 5';
 betSmallBtn.classList.add("btn");
 
-
 const betLargeBtn = document.createElement("button");
 betLargeBtn.textContent = 'Bet 10';
 betLargeBtn.classList.add('btn');
 
-
 const dealer = new Dealer();
-
-
 const playerOne = new Player('playerOne', 1000);
 const playerTwo = new Player('playerTwo', 1000);
 const table = new Table([playerOne, playerTwo]);
-console.log(playerOne.name);
-console.log(table)
+
 // Event Listeners
 dealBtn.addEventListener("click", () => {
     if (playerOne.board.length === 2){
@@ -166,6 +161,7 @@ betSmallBtn.addEventListener("click", () => {
 });
 
 betLargeBtn.addEventListener("click", () => {
+    console.log('before', table)
     if (table.board.length >= 3 && table.board.length < 5){
         playerOne.betLarge();
         if (Math.random()>.1){
@@ -178,6 +174,8 @@ betLargeBtn.addEventListener("click", () => {
     } else {
         console.log('cant bet that much yet')
     }
+    console.log('after:', table)
+    readHands();
 }); 
 
 bodyEl.appendChild(dealBtn)
@@ -192,3 +190,26 @@ bodyEl.appendChild(betLargeBtn)
  * Known bugs:
  * Bet
  */
+
+function readHands(){
+    let playerHand = []
+    let computerHand = []
+    for (let card of playerOne.board){
+        playerHand.push(card)
+    }
+    for (let card of table.board){
+        playerHand.push(card);
+    }
+    console.log('player hand:', playerHand);
+    for (let card of playerTwo.board){
+        computerHand.push(card)
+    }
+    for (let card of table.board){
+        computerHand.push(card);
+    }
+    console.log('computer hand', computerHand);
+    //grab ranks and suits
+    
+    //store ranks & suits in object
+
+}
