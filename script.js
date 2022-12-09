@@ -192,8 +192,11 @@ bodyEl.appendChild(betLargeBtn)
  */
 
 function readHands(){
+    // assemble the distinct hands
     let playerHand = []
     let computerHand = []
+    let playerRanks = [];
+    let playerSuits = [];
     for (let card of playerOne.board){
         playerHand.push(card)
     }
@@ -208,8 +211,39 @@ function readHands(){
         computerHand.push(card);
     }
     console.log('computer hand', computerHand);
-    //grab ranks and suits
-    
-    //store ranks & suits in object
+    for (let card of playerHand){
+        playerRanks.push(card.rank);
+        playerSuits.push(card.suit);
+    }
+    for (let i=0; i < playerRanks.length; i++){
+        let rankCount = 0
+        if (playerRank[i] === playerRank[i+1]){
+            rankCount++
+        }
+    }
+    // mission: iterate through each 7-card hand, evaluate to find the best 5 card hand, declare owner of that hand the winner, award them the pot, reset 
 
+    // High-card: Highest rank in the hand
+    // Pair: exactly 2 of any one rank
+    for (let i=0; i < playerRanks.length; i++){
+        let rankCount = 0
+        if (playerRank[i] === playerRank[i+1]){
+            rankCount++
+        }
+    }
+    // 2 Pair: exactly 2 of exactly 2 different ranks
+    // 3 of a Kind: exactly 3 of one rank
+    // Straight: 5 consecutive ranks
+    // Flush: 5 of any one suit
+    // Boat: 3 of a kind + pair
+    // Quads: 4 of one rank
+    // Straight-Flush: 5 consecutive ranks all of which are of the same suit
+    for (let i=0; i< playerSuits.length; i++){
+        let suitCount = 0
+        for (let suit of playerSuits){
+            if (playerSuit[i] === playerSuit[i+1]){
+                suitCount++
+            }
+        }
+    }
 }
