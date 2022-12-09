@@ -149,11 +149,13 @@ dealBtn.addEventListener("click", () => {
 betSmallBtn.addEventListener("click", () => {
     if (table.board.length === 0){
         playerOne.betSmall();
-        if (Math.random()>.01){
+        if (Math.random()>.91){
             playerTwo.betSmall();
             dealer.dealCards(3, table);
         } else {
             playerTwo.fold();
+            table.awardPot(playerOne);
+            console.log(playerOne, playerTwo)
         } 
     } else {
         console.log('bet more, donkey!');
@@ -162,20 +164,22 @@ betSmallBtn.addEventListener("click", () => {
 
 betLargeBtn.addEventListener("click", () => {
     console.log('before', table)
-    if (table.board.length >= 3 && table.board.length < 5){
+    if (table.board.length === 3 || table.board.length === 4){
         playerOne.betLarge();
         if (Math.random()>.1){
             playerTwo.betLarge()
             dealer.dealCards(1, table);
+        }  else if (table.board.length >= 5) {
+            if (Math.random()>.1){
+                playerTwo.betLarge();
+                //readHands();
+            } 
         } else {
             table.awardPot(playerOne)
             playerTwo.fold();
         }
-    } else {
         console.log('cant bet that much yet')
     }
-    console.log('after:', table)
-    readHands();
 }); 
 
 bodyEl.appendChild(dealBtn)
@@ -191,59 +195,59 @@ bodyEl.appendChild(betLargeBtn)
  * Bet
  */
 
-function readHands(){
-    // assemble the distinct hands
-    let playerHand = []
-    let computerHand = []
-    let playerRanks = [];
-    let playerSuits = [];
-    for (let card of playerOne.board){
-        playerHand.push(card)
-    }
-    for (let card of table.board){
-        playerHand.push(card);
-    }
-    console.log('player hand:', playerHand);
-    for (let card of playerTwo.board){
-        computerHand.push(card)
-    }
-    for (let card of table.board){
-        computerHand.push(card);
-    }
-    console.log('computer hand', computerHand);
-    for (let card of playerHand){
-        playerRanks.push(card.rank);
-        playerSuits.push(card.suit);
-    }
-    for (let i=0; i < playerRanks.length; i++){
-        let rankCount = 0
-        if (playerRank[i] === playerRank[i+1]){
-            rankCount++
-        }
-    }
-    // mission: iterate through each 7-card hand, evaluate to find the best 5 card hand, declare owner of that hand the winner, award them the pot, reset 
+// function readHands(){
+//     // assemble the distinct hands
+//     let playerHand = []
+//     let computerHand = []
+//     let playerRanks = [];
+//     let playerSuits = [];
+//     for (let card of playerOne.board){
+//         playerHand.push(card)
+//     }
+//     for (let card of table.board){
+//         playerHand.push(card);
+//     }
+//     console.log('player hand:', playerHand);
+//     for (let card of playerTwo.board){
+//         computerHand.push(card)
+//     }
+//     for (let card of table.board){
+//         computerHand.push(card);
+//     }
+//     console.log('computer hand', computerHand);
+//     for (let card of playerHand){
+//         playerRanks.push(card.rank);
+//         playerSuits.push(card.suit);
+//     }
+//     for (let i=0; i < playerRanks.length; i++){
+//         let rankCount = 0
+//         if (playerRank[i] === playerRank[i+1]){
+//             rankCount++
+//         }
+//     }
+//     // mission: iterate through each 7-card hand, evaluate to find the best 5 card hand, declare owner of that hand the winner, award them the pot, reset 
 
-    // High-card: Highest rank in the hand
-    // Pair: exactly 2 of any one rank
-    for (let i=0; i < playerRanks.length; i++){
-        let rankCount = 0
-        if (playerRank[i] === playerRank[i+1]){
-            rankCount++
-        }
-    }
-    // 2 Pair: exactly 2 of exactly 2 different ranks
-    // 3 of a Kind: exactly 3 of one rank
-    // Straight: 5 consecutive ranks
-    // Flush: 5 of any one suit
-    // Boat: 3 of a kind + pair
-    // Quads: 4 of one rank
-    // Straight-Flush: 5 consecutive ranks all of which are of the same suit
-    for (let i=0; i< playerSuits.length; i++){
-        let suitCount = 0
-        for (let suit of playerSuits){
-            if (playerSuit[i] === playerSuit[i+1]){
-                suitCount++
-            }
-        }
-    }
-}
+//     // Straight-Flush: 5 consecutive ranks all of which are of the same suit
+//     for (let i=0; i< playerSuits.length; i++){
+//         let suitCount = 0
+//         for (let suit of playerSuits){
+//             if (playerSuit[i] === playerSuit[i+1]){
+//                 suitCount++
+//             }
+//         }
+//     }
+//     // Quads: 4 of one rank
+//     // Boat: 3 of a kind + pair
+//     // Flush: 5 of any one suit
+//     // Straight: 5 consecutive ranks
+//     // 3 of a Kind: exactly 3 of one rank
+//     // 2 Pair: exactly 2 of exactly 2 different ranks
+//     // Pair: exactly 2 of any one rank
+//     for (let i=0; i < playerRanks.length; i++){
+//         let rankCount = 0
+//         if (playerRank[i] === playerRank[i+1]){
+//             rankCount++
+//         }
+//     }
+//     // High-card: Highest rank in the hand
+// }
