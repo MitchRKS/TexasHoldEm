@@ -37,16 +37,22 @@ class Table {
       player.board = [];
       player.bet = 0;
     }
-    let allCards = document.querySelectorAll(".card");
-    for (let card of allCards) {
-      bodyEl.removeChild(card);
+    // let allCards = document.querySelectorAll(".card");
+    // for (let card of allCards) {
+    //   bodyEl.removeChild(card);
+    // }
+  }
+
+  assembleHands(player){
+    for (let card of this.board){
+        player.board.push(card);
     }
   }
 
   readHands() {
     for (let player of this.players) {
-      //this.countPlayerCards(player.board);
-      console.log(this.countPlayerCards(player.board));
+        let handCounts = this.countPlayerCards(player.board);
+        console.log('readHands ran', handCounts)      
     }
   }
 
@@ -66,6 +72,7 @@ class Table {
         playerHand[suitKey] = 1;
       }
     }
+    console.log('countPlayerCards ran', playerHand);
     return playerHand;
   }
 }
@@ -132,16 +139,6 @@ class Dealer extends Table {
     }
   }
 }
-// get handStrength(){
-//     let strength = 0;
-//     for (let card of this.table.board){
-//         const rankNum = parseInt(card.rank)
-//         strength += rankNum;
-//     }
-//     for (let card of this.board){
-//         strength += card.rank;
-//     }
-//     return strength;}
 
 //Buttons
 
@@ -183,8 +180,6 @@ betSmallBtn.addEventListener("click", () => {
       playerTwo.fold();
       table.pot = playerOne.bet + playerTwo.bet;
       table.awardPot(playerOne);
-      console.log("playerTwo folds");
-      console.log(playerOne, playerTwo);
     }
   } else {
     console.log("bet more, donkey!");
@@ -207,6 +202,8 @@ betLargeBtn.addEventListener("click", () => {
     if (Math.random() > 0.01) {
       playerTwo.betLarge();
       table.pot = playerOne.bet + playerTwo.bet;
+      table.assembleHands(playerOne);
+      table.assembleHands(playerTwo);
       table.readHands();
       table.awardPot(playerOne);
     } else {
