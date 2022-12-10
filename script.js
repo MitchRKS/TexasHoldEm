@@ -55,33 +55,70 @@ class Table {
     console.log("read hands ran");
     for (let player of this.players) {
       let instances = this.countPlayerCards(player.board);
+      //const straightFlush = this.checkStraightFlush(instances);
+      const quads = this.checkQuads(instances);
+      const boat = this.checkBoat(instances);
       const flush = this.checkFlush(instances);
       const trips = this.checkTrips(instances);
       const twoPair = this.checkTwoPair(instances);
       const pair = this.checkPair(instances);
-
+      console.log("quads: ", quads, player.board);
+      console.log("boat: ", boat, player.board);
       console.log("flush: ", flush, player.board);
       console.log("trips: ", trips, player.board);
       console.log("Two Pair: ", twoPair, player.board);
       console.log("pair: ", pair, player.board);
+      console.log(instances);
+    }
+  }
+
+  checkQuads(instances) {
+    console.log("check quads");
+    for (let rank of ranks) {
+      if (instances[rank] && instances[rank] === 4) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  checkBoat(instances) {
+    console.log("check boat");
+    for (let rank of ranks) {
+      if (instances[rank] && instances[rank] === 3) {
+        for (let rank of ranks) {
+          if (instances[rank] && instances[rank] === 2) {
+            return true;
+          }
+        }
+      } else {
+        return false;
+      }
     }
   }
 
   checkFlush(instances) {
     console.log("check flush");
-    if (instances["clubs"] && instances["clubs"] >= 5) {
-      return true;
+    for (let suit of suits) {
+      if (instances[suit] && instances[suit] >= 5) {
+        return true;
+      } else {
+        return false;
+      }
     }
-    if (instances["hearts"] && instances["hearts"] >= 5) {
-      return true;
-    }
-    if (instances["spades"] && instances["spades"] >= 5) {
-      return true;
-    }
-    if (instances["diamonds"] && instances["diamonds"] >= 5) {
-      return true;
-    }
-    return false;
+    // if (instances["clubs"] && instances["clubs"] >= 5) {
+    //   return true;
+    // }
+    // if (instances["hearts"] && instances["hearts"] >= 5) {
+    //   return true;
+    // }
+    // if (instances["spades"] && instances["spades"] >= 5) {
+    //   return true;
+    // }
+    // if (instances["diamonds"] && instances["diamonds"] >= 5) {
+    //   return true;
+    // }
   }
 
   checkPair(instances) {
@@ -96,11 +133,14 @@ class Table {
     console.log("check two pair");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 2) {
-        if (instances[rank + 1] && instances[rank + 1] === 2) {
-          return true;
-        } else {
-          return false;
+        let i = instances[rank] + 1;
+        for (i; i < ranks.length; i++) {
+          if (instances[i] && instances[i] === 2) {
+            return true;
+          }
         }
+      } else {
+        return false;
       }
     }
   }
@@ -109,17 +149,6 @@ class Table {
     console.log("check trips");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-
-  checkQuads(instances) {
-    console.log("check quads");
-    for (let rank of ranks) {
-      if (instances[rank] && instances[rank] === 4) {
         return true;
       } else {
         return false;
@@ -244,7 +273,7 @@ dealBtn.addEventListener("click", () => {
 betSmallBtn.addEventListener("click", () => {
   if (table.board.length === 0) {
     playerOne.betSmall();
-    if (Math.random() > 0.1) {
+    if (Math.random() > 0.01) {
       playerTwo.betSmall();
       dealer.dealCards(3, table);
     } else {
@@ -260,7 +289,7 @@ betSmallBtn.addEventListener("click", () => {
 betLargeBtn.addEventListener("click", () => {
   if (table.board.length === 3 || table.board.length === 4) {
     playerOne.betLarge();
-    if (Math.random() > 0.1) {
+    if (Math.random() > 0.01) {
       playerTwo.betLarge();
       dealer.dealCards(1, table);
     } else {
