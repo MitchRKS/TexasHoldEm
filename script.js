@@ -37,22 +37,66 @@ class Table {
       player.board = [];
       player.bet = 0;
     }
-    // let allCards = document.querySelectorAll(".card");
-    // for (let card of allCards) {
-    //   bodyEl.removeChild(card);
-    // }
+    let allCards = document.querySelectorAll(".card");
+    for (let card of allCards) {
+      bodyEl.removeChild(card);
+    }
   }
 
-  assembleHands(player){
-    for (let card of this.board){
-        player.board.push(card);
+  assembleHands(player) {
+    for (let card of this.board) {
+      player.board.push(card);
     }
   }
 
   readHands() {
+    console.log("read hands ran");
     for (let player of this.players) {
-        let handCounts = this.countPlayerCards(player.board);
-        console.log('readHands ran', handCounts)      
+      let instances = this.countPlayerCards(player.board);
+      const flush = this.checkFlush(instances);
+      const pair = this.checkPair(instances);
+      const twoPair = this.checkTwoPair(instances);
+      console.log("flush: ", flush, player.board);
+      console.log("pair: ", pair, player.board);
+      console.log("Two Pair: ", twoPair, player.board);
+    }
+  }
+
+  checkFlush(instances) {
+    console.log("check flush");
+    if (instances["clubs"] && instances["clubs"] >= 5) {
+      return true;
+    }
+    if (instances["hearts"] && instances["hearts"] >= 5) {
+      return true;
+    }
+    if (instances["spades"] && instances["spades"] >= 5) {
+      return true;
+    }
+    if (instances["diamonds"] && instances["diamonds"] >= 5) {
+      return true;
+    }
+    return false;
+  }
+
+  checkPair(instances) {
+    console.log("check pair");
+    for (let rank of ranks) {
+      if (instances[rank] && instances[rank] === 2) return true;
+    }
+    return false;
+  }
+
+  checkTwoPair(instances) {
+    console.log("check two pair");
+    for (let rank of ranks) {
+      if (instances[rank] && instances[rank] === 2) {
+        if (instances[rank + 1] && instances[rank + 1] === 2) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   }
 
@@ -72,7 +116,7 @@ class Table {
         playerHand[suitKey] = 1;
       }
     }
-    console.log('countPlayerCards ran', playerHand);
+    console.log("countPlayerCards ran", playerHand);
     return playerHand;
   }
 }
