@@ -337,7 +337,7 @@ dealBtn.addEventListener("click", () => {
     return alert("hit the bricks, kid");
   }
   if (playerOne.board.length === 2) {
-    console.log("player hands full");
+    alert("player hands full");
   } else {
     playerOne.betSmall();
     playerTwo.betSmall();
@@ -360,7 +360,7 @@ betSmallBtn.addEventListener("click", () => {
   if (table.board.length === 0) {
     playerOne.betSmall();
     table.updateStacks();
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.01) {
       playerTwo.betSmall();
       table.updateStacks();
       dealer.dealCards(3, table, "flop");
@@ -390,7 +390,7 @@ betLargeBtn.addEventListener("click", () => {
     }
   } else if (table.board.length === 4) {
     playerOne.betLarge();
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.01) {
       playerTwo.betLarge();
       table.updateStacks();
       dealer.dealCards(1, table, "river");
@@ -399,8 +399,8 @@ betLargeBtn.addEventListener("click", () => {
       table.awardPot(playerOne);
       playerTwo.fold();
     }
-  } else if (table.board.length >= 5) {
-    if (Math.random() > 0.5) {
+  } else if (table.board.length >= 5)
+    if (Math.random() > 0.01) {
       playerTwo.betLarge();
       table.updateStacks();
       table.pot = playerOne.bet + playerTwo.bet;
@@ -411,15 +411,11 @@ betLargeBtn.addEventListener("click", () => {
         table.awardPot(playerOne);
         dealer = new Dealer();
       } else {
-        table.awardPot(playerTwo);
-        dealer = new Dealer();
+        playerTwo.fold();
+        table.pot = playerOne.bet + playerTwo.bet;
+        table.awardPot(playerOne);
       }
-    } else {
-      playerTwo.fold();
-      table.pot = playerOne.bet + playerTwo.bet;
-      table.awardPot(playerOne);
     }
-  }
 });
 
 resetBtn.addEventListener("click", () => {
