@@ -129,8 +129,8 @@ class Table {
       ) {
         return true;
       }
-      return false;
     }
+    return false;
   }
 
   checkTrips(instances) {
