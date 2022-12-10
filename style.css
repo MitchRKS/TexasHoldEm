@@ -2,9 +2,12 @@
   border: solid black 3px;
   margin: 0.1em;
 }
-
+body {
+  display: flex;
+}
 .card {
   height: 150px;
+  width: 100px;
 }
 
 .spades {

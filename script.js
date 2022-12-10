@@ -33,12 +33,12 @@ class Table {
   }
 
   clearBoards() {
-    // setTimeout(() => {
-    //   let allCards = document.querySelectorAll(".card");
-    //   for (let card of allCards) {
-    //     bodyEl.removeChild(card);
-    //   }
-    // }, 1000);
+    setTimeout(() => {
+      let allCards = document.querySelectorAll(".card");
+      for (let card of allCards) {
+        bodyEl.removeChild(card);
+      }
+    }, 5000);
     this.board = [];
     for (let player of this.players) {
       player.board = [];
@@ -106,7 +106,6 @@ class Table {
     return false;
   }
   checkQuads(instances) {
-    // console.log("check quads");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 4) return true;
     }
@@ -114,7 +113,6 @@ class Table {
   }
 
   checkBoat(instances) {
-    // console.log("check boat");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) {
         for (let rank of ranks) {
@@ -126,7 +124,6 @@ class Table {
   }
 
   checkFlush(instances) {
-    // console.log("check flush");
     for (let suit of suits) {
       if (instances[suit] && instances[suit] >= 5) {
         return true;
@@ -137,7 +134,6 @@ class Table {
   }
 
   checkStraight(instances) {
-    // console.log("check straight");
     for (let rank of ranks) {
       if (
         instances[rank] &&
@@ -153,7 +149,6 @@ class Table {
   }
 
   checkTrips(instances) {
-    // console.log("check trips");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) return true;
     }
@@ -161,7 +156,6 @@ class Table {
   }
 
   checkTwoPair(instances) {
-    // console.log("check two pair");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 2) {
         for (let i = rank + 1; i < 16; i++) {
@@ -173,7 +167,6 @@ class Table {
   }
 
   checkPair(instances) {
-    // console.log("check pair");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 2) return true;
     }
@@ -212,7 +205,6 @@ class Table {
         playerHand[suitKey] = 1;
       }
     }
-    // console.log("countPlayerCards ran", playerHand);
     return playerHand;
   }
 }
@@ -237,7 +229,7 @@ class Player {
   }
 
   fold() {
-    console.log("Opponent Folds, You Win!");
+    return alert("the fish finally folded");
   }
 }
 
@@ -269,13 +261,13 @@ class Dealer extends Table {
     }
   }
 
-  dealCards(num, target) {
+  dealCards(num, target, owner) {
     const nextCards = this.deck.splice(0, num);
     for (let card of nextCards) {
       target.board.push(card);
       let cardDiv = document.createElement("div");
       cardDiv.classList.add("card", `${card.suit}`);
-      cardDiv.textContent = `${card.rank} of ${card.suit}`;
+      cardDiv.textContent = `${owner}: ${card.rank} of ${card.suit}`;
       bodyEl.appendChild(cardDiv);
     }
   }
@@ -295,32 +287,42 @@ const betLargeBtn = document.createElement("button");
 betLargeBtn.textContent = "Bet 10";
 betLargeBtn.classList.add("btn");
 
+const resetBtn = document.createElement("button");
+resetBtn.textContent = "Get More Chips";
+resetBtn.classList.add("btn");
+
 let dealer = new Dealer();
-const playerOne = new Player("playerOne", 1000);
+let playerOne = new Player("playerOne", 10);
 const playerTwo = new Player("playerTwo", 1000);
 const table = new Table([playerOne, playerTwo]);
 
 // Event Listeners
 dealBtn.addEventListener("click", () => {
+  if (playerOne.chipCount <= 0) {
+    return alert("hit the bricks, kid");
+  }
   if (playerOne.board.length === 2) {
     console.log("player hands full");
   } else {
-    dealer.dealCards(2, playerOne);
-    dealer.dealCards(2, playerTwo);
+    dealer.dealCards(2, playerOne, playerOne.name);
+    dealer.dealCards(2, playerTwo, playerTwo.name);
   }
   console.log("dealt cards", playerOne.board, playerTwo.board);
 });
 
 betSmallBtn.addEventListener("click", () => {
+  if (playerOne.board.length === 0) {
+    return alert("you dont even have any cards yet");
+  }
   if (table.board.length === 0) {
     playerOne.betSmall();
-    if (Math.random() > 0.01) {
+    if (Math.random() > 0.5) {
       playerTwo.betSmall();
-      dealer.dealCards(3, table);
+      dealer.dealCards(3, table, "flop");
     } else {
-      playerTwo.fold();
       table.pot = playerOne.bet + playerTwo.bet;
       table.awardPot(playerOne);
+      playerTwo.fold();
     }
   } else {
     console.log("bet more, donkey!");
@@ -328,16 +330,28 @@ betSmallBtn.addEventListener("click", () => {
 });
 
 betLargeBtn.addEventListener("click", () => {
-  if (table.board.length === 3 || table.board.length === 4) {
+  if (table.board.length < 3) {
+    return alert("the flop hasnt been dealt yet");
+  }
+  if (table.board.length === 3) {
     playerOne.betLarge();
     if (Math.random() > 0.01) {
       playerTwo.betLarge();
-      dealer.dealCards(1, table);
+      dealer.dealCards(1, table, "turn");
     } else {
-      playerTwo.fold();
       table.pot = playerOne.bet + playerTwo.bet;
       table.awardPot(playerOne);
-      console.log("playerTwo folds");
+      playerTwo.fold();
+    }
+  } else if (table.board.length === 4) {
+    playerOne.betLarge();
+    if (Math.random() > 0.01) {
+      playerTwo.betLarge();
+      dealer.dealCards(1, table, "river");
+    } else {
+      table.pot = playerOne.bet + playerTwo.bet;
+      table.awardPot(playerOne);
+      playerTwo.fold();
     }
   } else if (table.board.length >= 5) {
     if (Math.random() > 0.01) {
@@ -366,9 +380,13 @@ betLargeBtn.addEventListener("click", () => {
   }
 });
 
+resetBtn.addEventListener("click", () => {
+  playerOne.chipCount += 100;
+});
 bodyEl.appendChild(dealBtn);
 bodyEl.appendChild(betSmallBtn);
 bodyEl.appendChild(betLargeBtn);
+bodyEl.appendChild(resetBtn);
 
 // function readHands(){
 //     // assemble the distinct hands
