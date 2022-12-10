@@ -63,6 +63,7 @@ class Table {
       const trips = this.checkTrips(instances);
       const twoPair = this.checkTwoPair(instances);
       const pair = this.checkPair(instances);
+      const highCard = this.checkHighCard(instances);
       console.log("straight flush: ", straightFlush, player.board);
       console.log("quads: ", quads, player.board);
       console.log("boat: ", boat, player.board);
@@ -71,6 +72,7 @@ class Table {
       console.log("trips: ", trips, player.board);
       console.log("Two Pair: ", twoPair, player.board);
       console.log("pair: ", pair, player.board);
+      console.log("high card: ", highCard, player.board);
       console.log(instances);
     }
   }
@@ -155,6 +157,22 @@ class Table {
     console.log("check pair");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 2) return true;
+    }
+    return false;
+  }
+
+  checkHighCard(instances) {
+    if (
+      this.checkStraightFlush(instances) === false &&
+      this.checkQuads(instances) === false &&
+      this.checkBoat(instances) === false &&
+      this.checkFlush(instances) === false &&
+      this.checkStraight(instances) === false &&
+      this.checkTrips(instances) === false &&
+      this.checkTwoPair(instances) === false &&
+      this.checkPair(instances) === false
+    ) {
+      return true;
     }
     return false;
   }
