@@ -93,27 +93,9 @@ class Table {
       if (highCard === true) {
         player.handStrength = 1;
       }
-      //   console.log("straight flush: ", straightFlush, player.board);
-      //   console.log("quads: ", quads, player.board);
-      //   console.log("boat: ", boat, player.board);
-      //   console.log("flush: ", flush, player.board);
-      //   console.log("straight: ", straight, player.board);
-      //   console.log("trips: ", trips, player.board);
-      //   console.log("Two Pair: ", twoPair, player.board);
-      //   console.log("pair: ", pair, player.board);
-      //   console.log("high card: ", highCard, player.board);
-      //   console.log(instances);
-      console.log(player.handStrength);
     }
   }
-  checkStrongest(handValues) {
-    console.log("check strongest ran");
-    for (let value of handValues) {
-      let count = 0;
-      if (value > count) count = value;
-    }
-    console.log(count);
-  }
+
   checkStraightFlush(instances) {
     if (
       this.checkStraight(instances) === true &&
@@ -124,7 +106,7 @@ class Table {
     return false;
   }
   checkQuads(instances) {
-    console.log("check quads");
+    // console.log("check quads");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 4) return true;
     }
@@ -132,7 +114,7 @@ class Table {
   }
 
   checkBoat(instances) {
-    console.log("check boat");
+    // console.log("check boat");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) {
         for (let rank of ranks) {
@@ -144,7 +126,7 @@ class Table {
   }
 
   checkFlush(instances) {
-    console.log("check flush");
+    // console.log("check flush");
     for (let suit of suits) {
       if (instances[suit] && instances[suit] >= 5) {
         return true;
@@ -155,7 +137,7 @@ class Table {
   }
 
   checkStraight(instances) {
-    console.log("check straight");
+    // console.log("check straight");
     for (let rank of ranks) {
       if (
         instances[rank] &&
@@ -171,7 +153,7 @@ class Table {
   }
 
   checkTrips(instances) {
-    console.log("check trips");
+    // console.log("check trips");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) return true;
     }
@@ -179,7 +161,7 @@ class Table {
   }
 
   checkTwoPair(instances) {
-    console.log("check two pair");
+    // console.log("check two pair");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 2) {
         for (let i = rank + 1; i < 16; i++) {
@@ -191,7 +173,7 @@ class Table {
   }
 
   checkPair(instances) {
-    console.log("check pair");
+    // console.log("check pair");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 2) return true;
     }
@@ -230,7 +212,7 @@ class Table {
         playerHand[suitKey] = 1;
       }
     }
-    console.log("countPlayerCards ran", playerHand);
+    // console.log("countPlayerCards ran", playerHand);
     return playerHand;
   }
 }
@@ -313,7 +295,7 @@ const betLargeBtn = document.createElement("button");
 betLargeBtn.textContent = "Bet 10";
 betLargeBtn.classList.add("btn");
 
-const dealer = new Dealer();
+let dealer = new Dealer();
 const playerOne = new Player("playerOne", 1000);
 const playerTwo = new Player("playerTwo", 1000);
 const table = new Table([playerOne, playerTwo]);
@@ -364,7 +346,15 @@ betLargeBtn.addEventListener("click", () => {
       table.assembleHands(playerOne);
       table.assembleHands(playerTwo);
       table.readHands();
-      table.awardPot(playerOne);
+      if (playerOne.handStrength > playerTwo.handStrength) {
+        table.awardPot(playerOne);
+        dealer = new Dealer();
+        console.log(playerOne, playerTwo);
+      } else {
+        table.awardPot(playerTwo);
+        dealer = new Dealer();
+        console.log(playerOne, playerTwo);
+      }
     } else {
       playerTwo.fold();
       table.pot = playerOne.bet + playerTwo.bet;
