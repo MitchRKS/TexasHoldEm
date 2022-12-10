@@ -291,12 +291,16 @@ class Dealer extends Table {
       cardDiv.textContent = `${owner}: ${card.rank} of ${card.suit}`;
       if (owner === playerTwo.name) {
         cardDiv.classList.add("hidden");
+        let compDiv = document.querySelector(".playerTwo");
+        compDiv.appendChild(cardDiv);
       } else if (owner === playerOne.name) {
         cardDiv.classList.add("hole");
+        let playerDiv = document.querySelector(".playerOne");
+        playerDiv.appendChild(cardDiv);
       } else {
         cardDiv.classList.add("community");
+        bodyEl.appendChild(cardDiv);
       }
-      bodyEl.appendChild(cardDiv);
     }
   }
 }

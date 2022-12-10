@@ -4,13 +4,41 @@
   background: darkgrey;
 }
 body {
+  display: flex;
   background: lightgreen;
   display: flex;
+  flex-flow: row wrap;
+  width: auto;
+  height: auto;
+  justify-content: center;
+}
+
+h1 {
+  display: flex;
+  order: -3;
+  background: skyblue;
+  display: flex;
   flex-flow: row nowrap;
-  width: cover;
-  justify-content: ;
+  width: 1950px;
+  height: 100px;
+  justify-content: center;
+}
+
+.playerOne {
+  display: flex;
+  order: -2;
+  background: turquoise;
+  height: 100px;
+  margin: 1px 1px 1px 1px;
+}
+
+.playerTwo {
+  display: flex;
+  order: 1;
+  background: red;
 }
 .card {
+  order: -1;
   height: 150px;
   width: 100px;
 }
@@ -42,6 +70,11 @@ body {
 .community {
   background: lightpink;
 }
+
 .btn {
+  order: 0;
   background: slategrey;
+  height: 10px;
+  width: 50px;
+  position: bottom;
 }
