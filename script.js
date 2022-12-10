@@ -138,18 +138,12 @@ class Table {
     console.log("check two pair");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 2) {
-        console.log("found first pair, now check for second");
-        let i = rank + 1;
-        console.log(i);
-        for (let i of ranks) {
-          if (instances[i] && instances[i] === 2) {
-            console.log("found second pair", instances[i]);
-            return true;
-          }
+        for (let i = rank + 1; i < 16; i++) {
+          if (instances[i] && instances[i] === 2) return true;
         }
       }
-      return false;
     }
+    return false;
   }
 
   checkPair(instances) {
