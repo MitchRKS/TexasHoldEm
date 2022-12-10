@@ -59,12 +59,17 @@ h1 {
   background: lightyellow;
 }
 
+.compCard {
+  background: white;
+  order: 0;
+}
 .hidden {
   background: black;
 }
 
 .hole {
   background: white;
+  order: -2;
 }
 
 .community {
