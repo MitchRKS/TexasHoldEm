@@ -37,7 +37,7 @@ class Table {
       for (let card of allCards) {
         bodyEl.removeChild(card);
       }
-    }, 10000);
+    }, 30000);
     this.board = [];
     for (let player of this.players) {
       player.board = [];
@@ -109,6 +109,17 @@ class Table {
     console.log("check trips");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  checkQuads(instances) {
+    console.log("check quads");
+    for (let rank of ranks) {
+      if (instances[rank] && instances[rank] === 4) {
         return true;
       } else {
         return false;
