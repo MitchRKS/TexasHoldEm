@@ -37,7 +37,7 @@ class Table {
       for (let card of allCards) {
         bodyEl.removeChild(card);
       }
-    }, 10000);
+    }, 1000);
     this.board = [];
     for (let player of this.players) {
       player.board = [];
@@ -59,12 +59,14 @@ class Table {
       const quads = this.checkQuads(instances);
       const boat = this.checkBoat(instances);
       const flush = this.checkFlush(instances);
+      const straight = this.checkStraight(instances);
       const trips = this.checkTrips(instances);
       const twoPair = this.checkTwoPair(instances);
       const pair = this.checkPair(instances);
       console.log("quads: ", quads, player.board);
       console.log("boat: ", boat, player.board);
       console.log("flush: ", flush, player.board);
+      console.log("straight: ", straight, player.board);
       console.log("trips: ", trips, player.board);
       console.log("Two Pair: ", twoPair, player.board);
       console.log("pair: ", pair, player.board);
@@ -92,9 +94,8 @@ class Table {
             return true;
           }
         }
-      } else {
-        return false;
       }
+      return false;
     }
   }
 
@@ -109,6 +110,30 @@ class Table {
     }
   }
 
+  checkStraight(instances) {
+    console.log("check straight");
+    for (let rank of ranks) {
+      if (
+        instances[rank] &&
+        instances[rank + 1] &&
+        instances[rank + 2] &&
+        instances[rank + 3] &&
+        instances[rank + 4]
+      ) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  checkTrips(instances) {
+    console.log("check trips");
+    for (let rank of ranks) {
+      if (instances[rank] && instances[rank] === 3) return true;
+    }
+    return false;
+  }
+
   checkTwoPair(instances) {
     console.log("check two pair");
     for (let rank of ranks) {
@@ -116,15 +141,15 @@ class Table {
         console.log("found first pair, now check for second");
         let i = rank + 1;
         console.log(i);
-        for (let rank of ranks) {
+        for (let i of ranks) {
           if (instances[i] && instances[i] === 2) {
             console.log("found second pair", instances[i]);
             return true;
           }
         }
       }
+      return false;
     }
-    return false;
   }
 
   checkPair(instances) {
@@ -133,16 +158,6 @@ class Table {
       if (instances[rank] && instances[rank] === 2) return true;
     }
     return false;
-  }
-
-  checkTrips(instances) {
-    console.log("check trips");
-    for (let rank of ranks) {
-      if (instances[rank] && instances[rank] === 3) {
-        return true;
-      }
-      return false;
-    }
   }
 
   countPlayerCards(playerCards) {
