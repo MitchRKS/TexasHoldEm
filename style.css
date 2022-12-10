@@ -1,5 +1,5 @@
 * {
-  border: solid black 3px;
+  border: solid white 1px;
   margin: 0.1em;
   background: darkgrey;
 }
@@ -9,13 +9,13 @@ body {
   display: flex;
   flex-flow: row wrap;
   width: auto;
-  height: auto;
+  height: 100%;
   justify-content: center;
 }
 
 h1 {
   display: flex;
-  order: -3;
+  order: -4;
   background: skyblue;
   display: flex;
   flex-flow: row nowrap;
@@ -26,7 +26,8 @@ h1 {
 
 .playerOne {
   display: flex;
-  order: -2;
+  order: -1;
+  width: auto;
   background: turquoise;
   height: 100px;
   margin: 1px 1px 1px 1px;
@@ -35,51 +36,50 @@ h1 {
 .playerTwo {
   display: flex;
   order: 1;
-  background: red;
+  width: auto;
+  background: turquoise;
+  height: 100px;
+  margin: 1px 1px 1px 1px;
 }
 .card {
-  order: -1;
   height: 150px;
   width: 100px;
 }
 
 .spades {
-  background: lightblue;
+  background: green;
 }
 
 .clubs {
-  background: lightgreen;
+  background: blue;
 }
 
 .hearts {
-  background: lightcoral;
+  background: red;
 }
 
 .diamonds {
-  background: lightyellow;
+  background: yellow;
 }
 
 .compCard {
-  background: white;
-  order: 0;
+  order: 2;
 }
 .hidden {
   background: black;
 }
 
 .hole {
-  background: white;
   order: -2;
 }
 
 .community {
-  background: lightpink;
+  order: 0;
 }
 
 .btn {
-  order: 0;
+  order: -3;
   background: slategrey;
-  height: 10px;
+  height: 100px;
   width: 50px;
-  position: bottom;
 }

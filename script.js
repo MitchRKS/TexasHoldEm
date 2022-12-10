@@ -434,6 +434,7 @@ betLargeBtn.addEventListener("click", () => {
 
 resetBtn.addEventListener("click", () => {
   playerOne.chipCount += 100;
+  table.updateStacks();
 });
 
 bodyEl.appendChild(dealBtn);
