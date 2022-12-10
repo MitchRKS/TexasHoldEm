@@ -30,7 +30,6 @@ class Table {
   }
 
   readHands() {
-    console.log("read hands ran");
     for (let player of this.players) {
       let instances = this.countPlayerCards(player.board);
       const straightFlush = this.checkStraightFlush(instances);
@@ -186,7 +185,6 @@ class Table {
   }
 
   renderStacks() {
-    console.log("render stack ran");
     for (let player of playerList) {
       const playerDiv = document.createElement("div");
       const playerChipDisplay = document.createElement("p");
@@ -331,7 +329,6 @@ const playerTwo = new Player("playerTwo", 1000);
 playerList.push(playerTwo);
 const table = new Table([playerOne, playerTwo]);
 
-console.log(playerList);
 table.renderStacks();
 
 // Event Listeners
@@ -363,7 +360,7 @@ betSmallBtn.addEventListener("click", () => {
   if (table.board.length === 0) {
     playerOne.betSmall();
     table.updateStacks();
-    if (Math.random() > 0.001) {
+    if (Math.random() > 0.5) {
       playerTwo.betSmall();
       table.updateStacks();
       dealer.dealCards(3, table, "flop");
@@ -372,8 +369,6 @@ betSmallBtn.addEventListener("click", () => {
       table.awardPot(playerOne);
       playerTwo.fold();
     }
-  } else {
-    console.log("bet more, donkey!");
   }
 });
 
@@ -395,7 +390,7 @@ betLargeBtn.addEventListener("click", () => {
     }
   } else if (table.board.length === 4) {
     playerOne.betLarge();
-    if (Math.random() > 0.01) {
+    if (Math.random() > 0.5) {
       playerTwo.betLarge();
       table.updateStacks();
       dealer.dealCards(1, table, "river");
@@ -405,7 +400,7 @@ betLargeBtn.addEventListener("click", () => {
       playerTwo.fold();
     }
   } else if (table.board.length >= 5) {
-    if (Math.random() > 0.01) {
+    if (Math.random() > 0.5) {
       playerTwo.betLarge();
       table.updateStacks();
       table.pot = playerOne.bet + playerTwo.bet;
@@ -415,20 +410,15 @@ betLargeBtn.addEventListener("click", () => {
       if (playerOne.handStrength > playerTwo.handStrength) {
         table.awardPot(playerOne);
         dealer = new Dealer();
-        console.log(playerOne, playerTwo);
       } else {
         table.awardPot(playerTwo);
         dealer = new Dealer();
-        console.log(playerOne, playerTwo);
       }
     } else {
       playerTwo.fold();
       table.pot = playerOne.bet + playerTwo.bet;
       table.awardPot(playerOne);
-      console.log("playerTwo folds");
     }
-  } else {
-    console.log(`why are there ${table.board.length} cards on the table`);
   }
 });
 
