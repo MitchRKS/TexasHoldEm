@@ -1,11 +1,14 @@
 * {
   border: solid black 3px;
   margin: 0.1em;
+  background: darkgrey;
 }
 body {
+  background: lightgreen;
   display: flex;
   flex-flow: row nowrap;
-  width: 500px;
+  width: cover;
+  justify-content: ;
 }
 .card {
   height: 150px;
@@ -30,4 +33,15 @@ body {
 
 .hidden {
   background: black;
+}
+
+.hole {
+  background: white;
+}
+
+.community {
+  background: lightpink;
+}
+.btn {
+  background: slategrey;
 }

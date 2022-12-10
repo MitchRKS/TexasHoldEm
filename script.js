@@ -1,4 +1,5 @@
 // Global variables
+let playerList = [];
 const hands = [
   "High Card",
   "Pair",
@@ -20,26 +21,6 @@ class Table {
     this.players = players;
     this.board = [];
     this.pot = 0;
-  }
-
-  awardPot(player) {
-    player.chipCount += this.pot;
-    this.pot = 0;
-    this.clearBoards();
-  }
-
-  clearBoards() {
-    setTimeout(() => {
-      let allCards = document.querySelectorAll(".card");
-      for (let card of allCards) {
-        bodyEl.removeChild(card);
-      }
-    }, 5000);
-    this.board = [];
-    for (let player of this.players) {
-      player.board = [];
-      player.bet = 0;
-    }
   }
 
   assembleHands(player) {
@@ -203,6 +184,50 @@ class Table {
     }
     return playerHand;
   }
+
+  renderStacks() {
+    console.log("render stack ran");
+    for (let player of playerList) {
+      const playerDiv = document.createElement("div");
+      const playerChipDisplay = document.createElement("p");
+      playerChipDisplay.innerHTML = `${player.name} has ${player.chipCount} chips.`;
+      playerDiv.appendChild(playerChipDisplay);
+      bodyEl.appendChild(playerDiv).classList.add(`${player.name}`);
+    }
+  }
+
+  updateStacks() {
+    for (let player of this.players) {
+      let chipDisplay = document.querySelector(`.${player.name}`);
+      chipDisplay.innerHTML = `${player.name} has ${player.chipCount} chips.`;
+    }
+  }
+
+  awardPot(player) {
+    player.chipCount += this.pot;
+    this.pot = 0;
+    this.updateStacks();
+    this.clearBoards();
+  }
+
+  clearBoards() {
+    let compCards = document.querySelectorAll(".hidden");
+    for (let card of compCards) {
+      card.classList.remove("hidden");
+    }
+    setTimeout(() => {
+      let allCards = document.querySelectorAll(".card");
+      for (let card of allCards) {
+        bodyEl.removeChild(card);
+      }
+    }, 5000);
+    this.board = [];
+    for (let player of this.players) {
+      player.board = [];
+      player.bet = 0;
+      player.handStrength = 0;
+    }
+  }
 }
 
 class Player {
@@ -266,6 +291,10 @@ class Dealer extends Table {
       cardDiv.textContent = `${owner}: ${card.rank} of ${card.suit}`;
       if (owner === playerTwo.name) {
         cardDiv.classList.add("hidden");
+      } else if (owner === playerOne.name) {
+        cardDiv.classList.add("hole");
+      } else {
+        cardDiv.classList.add("community");
       }
       bodyEl.appendChild(cardDiv);
     }
@@ -290,10 +319,16 @@ const resetBtn = document.createElement("button");
 resetBtn.textContent = "Get More Chips";
 resetBtn.classList.add("btn");
 
+// Instantiations
 let dealer = new Dealer();
-let playerOne = new Player("playerOne", 10);
+let playerOne = new Player("playerOne", 100);
+playerList.push(playerOne);
 const playerTwo = new Player("playerTwo", 1000);
+playerList.push(playerTwo);
 const table = new Table([playerOne, playerTwo]);
+
+console.log(playerList);
+table.renderStacks();
 
 // Event Listeners
 dealBtn.addEventListener("click", () => {
@@ -303,6 +338,9 @@ dealBtn.addEventListener("click", () => {
   if (playerOne.board.length === 2) {
     console.log("player hands full");
   } else {
+    playerOne.betSmall();
+    playerTwo.betSmall();
+    table.updateStacks();
     dealer.dealCards(2, playerOne, playerOne.name);
     dealer.dealCards(2, playerTwo, playerTwo.name);
   }
@@ -314,8 +352,10 @@ betSmallBtn.addEventListener("click", () => {
   }
   if (table.board.length === 0) {
     playerOne.betSmall();
+    table.updateStacks();
     if (Math.random() > 0.001) {
       playerTwo.betSmall();
+      table.updateStacks();
       dealer.dealCards(3, table, "flop");
     } else {
       table.pot = playerOne.bet + playerTwo.bet;
@@ -333,8 +373,10 @@ betLargeBtn.addEventListener("click", () => {
   }
   if (table.board.length === 3) {
     playerOne.betLarge();
+    table.updateStacks();
     if (Math.random() > 0.01) {
       playerTwo.betLarge();
+      table.updateStacks();
       dealer.dealCards(1, table, "turn");
     } else {
       table.pot = playerOne.bet + playerTwo.bet;
@@ -345,6 +387,7 @@ betLargeBtn.addEventListener("click", () => {
     playerOne.betLarge();
     if (Math.random() > 0.01) {
       playerTwo.betLarge();
+      table.updateStacks();
       dealer.dealCards(1, table, "river");
     } else {
       table.pot = playerOne.bet + playerTwo.bet;
@@ -354,6 +397,7 @@ betLargeBtn.addEventListener("click", () => {
   } else if (table.board.length >= 5) {
     if (Math.random() > 0.01) {
       playerTwo.betLarge();
+      table.updateStacks();
       table.pot = playerOne.bet + playerTwo.bet;
       table.assembleHands(playerOne);
       table.assembleHands(playerTwo);
@@ -381,66 +425,8 @@ betLargeBtn.addEventListener("click", () => {
 resetBtn.addEventListener("click", () => {
   playerOne.chipCount += 100;
 });
+
 bodyEl.appendChild(dealBtn);
 bodyEl.appendChild(betSmallBtn);
 bodyEl.appendChild(betLargeBtn);
 bodyEl.appendChild(resetBtn);
-
-// function readHands(){
-//     // assemble the distinct hands
-//     let playerHand = []
-//     let computerHand = []
-//     let playerRanks = [];
-//     let playerSuits = [];
-//     for (let card of playerOne.board){
-//         playerHand.push(card)
-//     }
-//     for (let card of table.board){
-//         playerHand.push(card);
-//     }
-//     console.log('player hand:', playerHand);
-
-//     for (let card of playerHand){
-//         playerRanks.push(card.rank);
-//     }
-//     for (let card of playerTwo.board){
-//         computerHand.push(card)
-//     }
-//     for (let card of table.board){
-//         computerHand.push(card);
-//     }
-//     console.log('computer hand', computerHand);
-//     for (let card of playerHand){
-//         playerRanks.push(card.rank);
-//         playerSuits.push(card.suit);
-//     }
-//     for (let i=0; i < playerRanks.length; i++){
-//     }
-/* -------------------------------------------------------------------------- */
-
-// mission: iterate through each 7-card hand, evaluate to find the best 5 card hand, declare owner of that hand the winner, award them the chipCount, reset
-
-// Straight-Flush: 5 consecutive ranks all of which are of the same suit
-// for (let i=0; i< playerSuits.length; i++){
-//     let suitCount = 0
-//     for (let suit of playerSuits){
-//         if (playerSuit[i] === playerSuit[i+1]){
-//             suitCount++
-//         }
-//     }
-// }
-// Quads: 4 of one rank
-// Boat: 3 of a kind + pair
-// Flush: 5 of any one suit
-// Straight: 5 consecutive ranks
-// 3 of a Kind: exactly 3 of one rank
-// 2 Pair: exactly 2 of exactly 2 different ranks
-// Pair: exactly 2 of any one rank
-// for (let i=0; i < playerRanks.length; i++){
-//     let rankCount = 0
-//     if (playerRank[i] === playerRank[i+1]){
-//         rankCount++
-//     }
-// }
-// High-card: Highest rank in the hand
-//}
