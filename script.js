@@ -250,7 +250,7 @@ class Player {
   }
 
   fold() {
-    return alert("the fish finally folded");
+    this.board = [];
   }
 }
 
@@ -307,6 +307,10 @@ const dealBtn = document.createElement("button");
 dealBtn.textContent = "Deal";
 dealBtn.classList.add("btn");
 
+const foldBtn = document.createElement("button");
+foldBtn.textContent = "Fold";
+foldBtn.classList.add("btn");
+
 const betSmallBtn = document.createElement("button");
 betSmallBtn.textContent = "Bet 5";
 betSmallBtn.classList.add("btn");
@@ -344,6 +348,12 @@ dealBtn.addEventListener("click", () => {
     dealer.dealCards(2, playerOne, playerOne.name);
     dealer.dealCards(2, playerTwo, playerTwo.name);
   }
+});
+
+foldBtn.addEventListener("click", () => {
+  playerOne.fold();
+  table.awardPot(playerTwo);
+  table.updateStacks();
 });
 
 betSmallBtn.addEventListener("click", () => {
@@ -427,6 +437,7 @@ resetBtn.addEventListener("click", () => {
 });
 
 bodyEl.appendChild(dealBtn);
+bodyEl.appendChild(foldBtn);
 bodyEl.appendChild(betSmallBtn);
 bodyEl.appendChild(betLargeBtn);
 bodyEl.appendChild(resetBtn);
