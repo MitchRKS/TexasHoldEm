@@ -32,14 +32,16 @@ class Table {
   }
 
   clearBoards() {
+    setTimeout(() => {
+      let allCards = document.querySelectorAll(".card");
+      for (let card of allCards) {
+        bodyEl.removeChild(card);
+      }
+    }, 10000);
     this.board = [];
     for (let player of this.players) {
       player.board = [];
       player.bet = 0;
-    }
-    let allCards = document.querySelectorAll(".card");
-    for (let card of allCards) {
-      bodyEl.removeChild(card);
     }
   }
 
@@ -54,11 +56,14 @@ class Table {
     for (let player of this.players) {
       let instances = this.countPlayerCards(player.board);
       const flush = this.checkFlush(instances);
-      const pair = this.checkPair(instances);
+      const trips = this.checkTrips(instances);
       const twoPair = this.checkTwoPair(instances);
+      const pair = this.checkPair(instances);
+
       console.log("flush: ", flush, player.board);
-      console.log("pair: ", pair, player.board);
+      console.log("trips: ", trips, player.board);
       console.log("Two Pair: ", twoPair, player.board);
+      console.log("pair: ", pair, player.board);
     }
   }
 
@@ -96,6 +101,17 @@ class Table {
         } else {
           return false;
         }
+      }
+    }
+  }
+
+  checkTrips(instances) {
+    console.log("check trips");
+    for (let rank of ranks) {
+      if (instances[rank] && instances[rank] === 3) {
+        return true;
+      } else {
+        return false;
       }
     }
   }
