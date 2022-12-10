@@ -77,26 +77,21 @@ class Table {
   checkQuads(instances) {
     console.log("check quads");
     for (let rank of ranks) {
-      if (instances[rank] && instances[rank] === 4) {
-        return true;
-      }
-      return false;
+      if (instances[rank] && instances[rank] === 4) return true;
     }
+    return false;
   }
 
   checkBoat(instances) {
     console.log("check boat");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) {
-        let i = instances[rank + 1];
-        for (i; i < ranks.length; i++) {
-          if (instances[i] && instances[i] === 2) {
-            return true;
-          }
+        for (let rank of ranks) {
+          if (instances[rank] && instances[rank] === 2) return true;
         }
       }
-      return false;
     }
+    return false;
   }
 
   checkFlush(instances) {
