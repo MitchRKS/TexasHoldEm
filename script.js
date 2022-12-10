@@ -14,6 +14,7 @@ const suits = ["spades", "hearts", "diamonds", "clubs"];
 const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 const bodyEl = document.querySelector("body");
 const playerDiv = document.createElement("div");
+let playerStrengths = [];
 playerDiv.classList.add("character");
 bodyEl.appendChild(playerDiv);
 
@@ -56,27 +57,63 @@ class Table {
     for (let player of this.players) {
       let instances = this.countPlayerCards(player.board);
       const straightFlush = this.checkStraightFlush(instances);
+      if (straightFlush === true) {
+        player.handStrength = 9;
+        return player;
+      }
       const quads = this.checkQuads(instances);
+      if (quads === true) {
+        player.handStrength = 8;
+      }
       const boat = this.checkBoat(instances);
+      if (boat === true) {
+        player.handStrength = 7;
+      }
       const flush = this.checkFlush(instances);
+      if (flush === true) {
+        player.handStrength = 6;
+      }
       const straight = this.checkStraight(instances);
+      if (straight === true) {
+        player.handStrength = 5;
+      }
       const trips = this.checkTrips(instances);
+      if (trips === true) {
+        player.handStrength = 4;
+      }
       const twoPair = this.checkTwoPair(instances);
+      if (twoPair === true) {
+        player.handStrength = 3;
+      }
       const pair = this.checkPair(instances);
+      if (pair === true) {
+        player.handStrength = 2;
+      }
       const highCard = this.checkHighCard(instances);
-      console.log("straight flush: ", straightFlush, player.board);
-      console.log("quads: ", quads, player.board);
-      console.log("boat: ", boat, player.board);
-      console.log("flush: ", flush, player.board);
-      console.log("straight: ", straight, player.board);
-      console.log("trips: ", trips, player.board);
-      console.log("Two Pair: ", twoPair, player.board);
-      console.log("pair: ", pair, player.board);
-      console.log("high card: ", highCard, player.board);
-      console.log(instances);
+      if (highCard === true) {
+        player.handStrength = 1;
+      }
+      //   console.log("straight flush: ", straightFlush, player.board);
+      //   console.log("quads: ", quads, player.board);
+      //   console.log("boat: ", boat, player.board);
+      //   console.log("flush: ", flush, player.board);
+      //   console.log("straight: ", straight, player.board);
+      //   console.log("trips: ", trips, player.board);
+      //   console.log("Two Pair: ", twoPair, player.board);
+      //   console.log("pair: ", pair, player.board);
+      //   console.log("high card: ", highCard, player.board);
+      //   console.log(instances);
+      console.log(player.handStrength);
     }
   }
-
+  checkStrongest(handValues) {
+    console.log("check strongest ran");
+    for (let value of handValues) {
+      let count = 0;
+      if (value > count) count = value;
+    }
+    console.log(count);
+  }
   checkStraightFlush(instances) {
     if (
       this.checkStraight(instances) === true &&
@@ -204,6 +241,7 @@ class Player {
     this.chipCount = chipCount;
     this.bet = 0;
     this.board = [];
+    this.handStrength = 0;
   }
 
   betSmall() {
