@@ -37,7 +37,7 @@ class Table {
       for (let card of allCards) {
         bodyEl.removeChild(card);
       }
-    }, 30000);
+    }, 10000);
     this.board = [];
     for (let player of this.players) {
       player.board = [];
@@ -77,9 +77,8 @@ class Table {
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 4) {
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
   }
 
@@ -87,8 +86,9 @@ class Table {
     console.log("check boat");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) {
-        for (let rank of ranks) {
-          if (instances[rank] && instances[rank] === 2) {
+        let i = instances[rank + 1];
+        for (i; i < ranks.length; i++) {
+          if (instances[i] && instances[i] === 2) {
             return true;
           }
         }
@@ -107,18 +107,24 @@ class Table {
         return false;
       }
     }
-    // if (instances["clubs"] && instances["clubs"] >= 5) {
-    //   return true;
-    // }
-    // if (instances["hearts"] && instances["hearts"] >= 5) {
-    //   return true;
-    // }
-    // if (instances["spades"] && instances["spades"] >= 5) {
-    //   return true;
-    // }
-    // if (instances["diamonds"] && instances["diamonds"] >= 5) {
-    //   return true;
-    // }
+  }
+
+  checkTwoPair(instances) {
+    console.log("check two pair");
+    for (let rank of ranks) {
+      if (instances[rank] && instances[rank] === 2) {
+        console.log("found first pair, now check for second");
+        let i = rank + 1;
+        console.log(i);
+        for (let rank of ranks) {
+          if (instances[i] && instances[i] === 2) {
+            console.log("found second pair", instances[i]);
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   checkPair(instances) {
@@ -129,30 +135,13 @@ class Table {
     return false;
   }
 
-  checkTwoPair(instances) {
-    console.log("check two pair");
-    for (let rank of ranks) {
-      if (instances[rank] && instances[rank] === 2) {
-        let i = instances[rank] + 1;
-        for (i; i < ranks.length; i++) {
-          if (instances[i] && instances[i] === 2) {
-            return true;
-          }
-        }
-      } else {
-        return false;
-      }
-    }
-  }
-
   checkTrips(instances) {
     console.log("check trips");
     for (let rank of ranks) {
       if (instances[rank] && instances[rank] === 3) {
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
   }
 
