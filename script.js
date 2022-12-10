@@ -55,7 +55,7 @@ class Table {
     console.log("read hands ran");
     for (let player of this.players) {
       let instances = this.countPlayerCards(player.board);
-      //const straightFlush = this.checkStraightFlush(instances);
+      const straightFlush = this.checkStraightFlush(instances);
       const quads = this.checkQuads(instances);
       const boat = this.checkBoat(instances);
       const flush = this.checkFlush(instances);
@@ -63,6 +63,7 @@ class Table {
       const trips = this.checkTrips(instances);
       const twoPair = this.checkTwoPair(instances);
       const pair = this.checkPair(instances);
+      console.log("straight flush: ", straightFlush, player.board);
       console.log("quads: ", quads, player.board);
       console.log("boat: ", boat, player.board);
       console.log("flush: ", flush, player.board);
@@ -74,6 +75,15 @@ class Table {
     }
   }
 
+  checkStraightFlush(instances) {
+    if (
+      this.checkStraight(instances) === true &&
+      this.checkFlush(instances) === true
+    ) {
+      return true;
+    }
+    return false;
+  }
   checkQuads(instances) {
     console.log("check quads");
     for (let rank of ranks) {
