@@ -13,10 +13,6 @@ const hands = [
 const suits = ["spades", "hearts", "diamonds", "clubs"];
 const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 const bodyEl = document.querySelector("body");
-const playerDiv = document.createElement("div");
-let playerStrengths = [];
-playerDiv.classList.add("character");
-bodyEl.appendChild(playerDiv);
 
 // Classes
 class Table {
@@ -268,6 +264,9 @@ class Dealer extends Table {
       let cardDiv = document.createElement("div");
       cardDiv.classList.add("card", `${card.suit}`);
       cardDiv.textContent = `${owner}: ${card.rank} of ${card.suit}`;
+      if (owner === playerTwo.name) {
+        cardDiv.classList.add("hidden");
+      }
       bodyEl.appendChild(cardDiv);
     }
   }
@@ -307,7 +306,6 @@ dealBtn.addEventListener("click", () => {
     dealer.dealCards(2, playerOne, playerOne.name);
     dealer.dealCards(2, playerTwo, playerTwo.name);
   }
-  console.log("dealt cards", playerOne.board, playerTwo.board);
 });
 
 betSmallBtn.addEventListener("click", () => {
@@ -316,7 +314,7 @@ betSmallBtn.addEventListener("click", () => {
   }
   if (table.board.length === 0) {
     playerOne.betSmall();
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.001) {
       playerTwo.betSmall();
       dealer.dealCards(3, table, "flop");
     } else {

@@ -4,6 +4,8 @@
 }
 body {
   display: flex;
+  flex-flow: row nowrap;
+  width: 500px;
 }
 .card {
   height: 150px;
@@ -24,4 +26,8 @@ body {
 
 .diamonds {
   background: lightyellow;
+}
+
+.hidden {
+  background: black;
 }
