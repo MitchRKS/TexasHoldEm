@@ -33,12 +33,12 @@ class Table {
   }
 
   clearBoards() {
-    setTimeout(() => {
-      let allCards = document.querySelectorAll(".card");
-      for (let card of allCards) {
-        bodyEl.removeChild(card);
-      }
-    }, 1000);
+    // setTimeout(() => {
+    //   let allCards = document.querySelectorAll(".card");
+    //   for (let card of allCards) {
+    //     bodyEl.removeChild(card);
+    //   }
+    // }, 1000);
     this.board = [];
     for (let player of this.players) {
       player.board = [];
@@ -274,7 +274,7 @@ class Dealer extends Table {
     for (let card of nextCards) {
       target.board.push(card);
       let cardDiv = document.createElement("div");
-      cardDiv.classList.add("card");
+      cardDiv.classList.add("card", `${card.suit}`);
       cardDiv.textContent = `${card.rank} of ${card.suit}`;
       bodyEl.appendChild(cardDiv);
     }
